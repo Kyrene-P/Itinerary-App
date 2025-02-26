@@ -22,7 +22,4 @@ The files listed above are commented fairly extensively and organized with purpo
 -JWT tokens for secure authorization
 
 ## Checking if can push and pull
--KP
--EF
-
--AU
+-KP 
