@@ -1,0 +1,40 @@
+document.addEventListener('DOMContentLoaded', () => {
+    
+    //////////////////////////////////////////
+    //ELEMENTS TO ATTACH EVENT LISTENERS
+    //////////////////////////////////////////
+    const dashboardButton = document.getElementById('dashboardButton');
+    //////////////////////////////////////////
+    //END ELEMENTS TO ATTACH EVENT LISTENERS
+    //////////////////////////////////////////
+
+
+    //////////////////////////////////////////
+    //EVENT LISTENERS
+    //////////////////////////////////////////
+    // Return user to dashboard
+    dashboardButton.addEventListener('click', () => {
+        window.location.href = '/dashboard';
+    });
+
+   
+    //////////////////////////////////////////
+    //END EVENT LISTENERS
+    //////////////////////////////////////////
+
+
+    //////////////////////////////////////////////////////
+    //CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
+    //////////////////////////////////////////////////////
+    // Initial check for the token
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+        window.location.href = '/';
+    } else {
+        DataModel.setToken(token);
+        renderUserList();
+    }
+    //////////////////////////////////////////
+    //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
+    //////////////////////////////////////////
+});

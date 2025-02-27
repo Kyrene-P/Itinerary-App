@@ -58,6 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
 //////////////////////////////////////////
 //FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
+
+async function displayAllItineraries (){
+
+}
+
+//It's current function allows the user's emails to link to iteneraries
+//--This will later be changed to the specific user's page an all their itineraries being displayed--
+//--When a user selects a specific itenerary, it will pull up the plans/schedule--
 async function renderUserList() {
     const userListElement = document.getElementById('userList');
     userListElement.innerHTML = '<div class="loading-message">Loading user list...</div>';
@@ -65,7 +73,12 @@ async function renderUserList() {
     users.forEach(user => {
         const userItem = document.createElement('div');
         userItem.classList.add('user-item');
-        userItem.textContent = user;
+        const itineraryLink = document.createElement('a');
+        itineraryLink.href = `/dashboard/itinerary`;
+        itineraryLink.textContent = user;
+        itineraryLink.classList.add('itinerary-link');
+
+        userItem.appendChild(itineraryLink)
         userListElement.appendChild(userItem);
     });
 }
