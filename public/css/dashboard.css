@@ -64,3 +64,31 @@ h1 {
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
+.feature-buttons {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+    height: 100vh; 
+}
+.feature-btn {
+    background-color: #28a745; /* Same green color from logon button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; 
+    transition: background-color 0.3s ease; 
+}
+#dashboardButton {
+    background-color: #28a745; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; 
+    transition: background-color 0.3s ease; 
+}
