@@ -25,6 +25,12 @@ app.get('/', (req, res) => {
 app.get('/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/dashboard.html');
 });
+
+// Routes to get to the itinerary.html
+app.get('/dashboard/itinerary', (req,res) => {
+    res.sendFile(__dirname  + '/public/itinerary.html')
+})
+
 //////////////////////////////////////
 //END ROUTES TO SERVE HTML FILES
 //////////////////////////////////////
