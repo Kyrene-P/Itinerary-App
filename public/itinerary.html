@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Itinerary</title>
-    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/itinerary.css">
     <!-- took dashboard css' file, needs to changed later -->
 </head>
 <body>
@@ -18,12 +18,50 @@
         <p>This is where the activities within a specific itinerary will appear.</p>
         <p>Currently, the links for each email is connected to one itinerary but opening a specific once will happen later</p>
     </div>
-    <div class="feature-buttons">
-        <button class="feature-btn">Select Mood</button>
-        <button class="feature-btn">Budget</button>
-        <button class="feature-btn">Invite Friends</button>
-        <button class="feature-btn">View Achievements</button>
+
+    <!-- This is the Mood Modal -->
+    <div id ="moodModal" class="modal">
+        <div class="feature-modal">
+            <span class="close" data-modal="moodModal">&times;</span>
+            <h2>Select Your Mood!</h2>
+            <p>This is where the mood features will go!</p>
+        </div>
     </div>
+
+    <!-- This is the Budget Modal -->
+    <div id ="budgetModal" class="modal">
+        <div class="feature-modal">
+            <span class="close" data-modal="budgetModal">&times;</span>
+            <h2>Select Your Budget!</h2>
+            <p>This is where the budget features will go!</p>
+        </div>
+    </div>
+
+    <!-- This is the Invite Modal -->
+    <div id ="inviteModal" class="modal">
+        <div class="feature-modal">
+            <span class="close" data-modal="inviteModal">&times;</span>
+            <h2>This is your Invite Code!</h2>
+            <p>This is where the invite features will go!</p>
+        </div>
+    </div>
+
+    <!-- This is the Achievement Modal -->
+    <div id ="achievementModal" class="modal">
+        <div class="feature-modal">
+            <span class="close" data-modal="achievementModal">&times;</span>
+            <h2>View your Achievements!</h2>
+            <p>This is where the achievement features will go!</p>
+        </div>
+    </div>
+
+    <!-- The feature buttons -->
+    <div class="feature-buttons">
+        <button id = "moodButton" class="feature-btn">Select Mood</button>
+        <button id = "budgetButton" class="feature-btn">Budget</button>
+        <button id = "inviteButton" class="feature-btn">Invite Friends</button>
+        <button id = "achievementButton" class="feature-btn">View Achievements</button>
+    </div>    
     <script src="/js/itinerary.js"></script>
 </body>
 </html>
