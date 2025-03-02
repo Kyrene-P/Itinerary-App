@@ -8,12 +8,22 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Users</h1>
-            <div>
-                <button id="refreshButton">Refresh List</button>
-                <button id="logoutButton">Log Out</button>
-            </div>
+        <div class="itinerary-section">
+            <h2>Your Itineraries</h2>
+            <p>This is a list of your saved itineraries!</p>
+            <!-- ***modify dashboard.js to update itineraryCount dynamically -->
+            <p id="itineraryCount">Total Itineraries: 3</p> 
+            <ul id="itineraryList">
+                <!-- List of itineraries user has created -->
+                <li><a href="#">Trip to New York</a></li>
+                <li><a href="#">Beach Vacation</a></li>
+                <li><a href="#">Weekend in Paris</a></li>
+            </ul>
+        </div>
+        <div class="buttons">
+            <button id="addItineraryButton">+Add New Itinerary</button>
+            <button id="refreshButton">Refresh List</button>
+            <button id="logoutButton">Log Out</button>
         </div>
         <div class="user-list" id="userList"></div>
     </div>
