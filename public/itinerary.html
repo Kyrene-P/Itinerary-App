@@ -26,25 +26,45 @@
             <button class="feature-btn" id="budgetButton">Budget</button>
             <button class="feature-btn" id="inviteButton">Invite Friends</button>
             <button class="feature-btn" id="achievementButton">View Achievements</button>
+        </div>
     </div>
 
     <!-- This is the Mood Modal -->
-    <div id ="moodModal" class="modal">
+    <div id="moodModal" class="modal">
         <div class="feature-modal">
             <span class="close" data-modal="moodModal">&times;</span>
             <h2>Select Your Mood!</h2>
-            <p>This is where the mood features will go!</p>
+            <p>Choose your mood to personalize your itinerary activities</p>
+            
+            <select id="moodDropdown">
+                <option value="" disabled selected>Select a mood...</option>
+                <option value="Relaxing">Relaxing</option>
+                <option value="Adventurous">Adventurous</option>
+                <option value="Artsy">Artsy</option>
+                <option value="Spontaneous">Spontaneous</option>
+            </select>
+    
+            <p><strong>Selected Mood:</strong> <span id="selectedMood">None</span></p>
         </div>
     </div>
-
+    
     <!-- This is the Budget Modal -->
-    <div id ="budgetModal" class="modal">
+    <div id="budgetModal" class="modal">
         <div class="feature-modal">
             <span class="close" data-modal="budgetModal">&times;</span>
             <h2>Select Your Budget!</h2>
-            <p>This is where the budget features will go!</p>
+            <p>Enter your minimum and maximum budget.</p>
+    
+            <label for="minBudget">Min Budget:</label>
+            <input type="number" id="minBudget" placeholder="$ Min" min="0" max="10000">
+    
+            <label for="maxBudget">Max Budget:</label>
+            <input type="number" id="maxBudget" placeholder="$ Max" min="0" max="10000">
+    
+            <p><strong>Selected Budget:</strong> <span id="selectedBudget">None</span></p>
         </div>
     </div>
+    
 
     <!-- This is the Invite Modal -->
     <div id ="inviteModal" class="modal">
