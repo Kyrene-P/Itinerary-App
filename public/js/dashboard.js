@@ -82,12 +82,14 @@ async function displayAllItineraries() {
             itineraryListElement.innerHTML = '<p>No itineraries found.</p>';
         } else {
             itineraries.forEach(itinerary => {
-                const listItem = document.createElement('li');
-                const link = document.createElement('a');
+                const listItem = document.createElement('div');
+                listItem.classList.add('itinerary-item');
+                const itineraryLink = document.createElement('a');
+                itineraryLink.href = `/dashboard/itinerary?id=${itinerary.id}`;
+                itineraryLink.textContent = itinerary.title || 'Unnamed Itinerary';
+                itineraryLink.classList.add('itinerary-link');
 
-                link.href = `/dashboard/itinerary?id=${itinerary.id}`;
-                link.textContent = itinerary.destination || 'Unnamed Itinerary';
-                listItem.appendChild(link);
+                listItem.appendChild(itineraryLink);
                 itineraryListElement.appendChild(listItem);
             });
         }
