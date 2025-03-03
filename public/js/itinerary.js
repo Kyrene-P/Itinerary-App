@@ -75,11 +75,46 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/';
     } else {
         DataModel.setToken(token);
-        renderUserList();
+        displayItineraryDetails();
     }
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
     //////////////////////////////////////////
 });
+//END OF DOMCONTENTLOADED
 
+//This allows the title and description of the itinerary page to reflect what's in the database
+async function displayItineraryDetails() {
+    const itineraryTitleElement = document.getElementById('itinerary-title');
+    const itineraryDescriptionElement = document.getElementById('itinerary-description');
+
+    //Getting the itinerary's id from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const itineraryId = urlParams.get('id');
+
+    if (!itineraryId) {
+        console.error('Itinerary ID is missing in the URL.');
+        return;
+    }
+
+    try {
+        //connects to DataModal.js
+        const details = await DataModel.getDetails(itineraryId);
+
+        if (!details) {
+            itineraryTitleElement.textContent = 'Itinerary not found';
+            itineraryDescriptionElement.textContent = '';
+            return;
+        }
+
+        //displayed the user's itineraries
+        itineraryTitleElement.textContent = details.title || 'Untitled Itinerary';
+        itineraryDescriptionElement.textContent = details.description || 'No details available.';
+
+    } catch (error) {
+        console.error('Error displaying details:', error);
+    }
+
+    
+}
 

@@ -70,6 +70,7 @@ const DataModel = (function () {
         //ADD MORE FUNCTIONS HERE TO FETCH DATA FROM THE SERVER
         //AND SEND DATA TO THE SERVER AS NEEDED
 
+        //This gets the itinerary information that is displayed on the dashboard
         getItineraries: async function () {
             if (!token) {
                 console.error("Token is not set.");
@@ -95,6 +96,34 @@ const DataModel = (function () {
             } catch (error) {
                 console.error("Error in API call:", error);
                 return [];
+            }
+        },
+
+        //This gets the details from a specific itinerary to the itinerary page
+        getDetails: async function (id) {
+            if (!token) {
+                console.error("Token is not set.");
+                return null;
+            }
+
+            try {
+                const response = await fetch(`/api/itineraries/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error("Error fetching itinerary details:", await response.json());
+                    return null;
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return null;
             }
         },
     };

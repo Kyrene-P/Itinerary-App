@@ -200,6 +200,30 @@ app.get('/api/itineraries', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error retrieving itineraries.' });
     }
 });
+
+//Route: Get Information of a Specific Itinerary
+app.get('/api/itineraries/:id', authenticateToken, async (req, res) => {
+    try {
+        const itineraryId = req.params.id;
+        const connection = await createConnection();
+
+        const [rows] = await connection.execute(
+            'SELECT * FROM itineraries WHERE id = ? and user_email = ?',
+            [itineraryId, req.user.email]
+        );
+
+        await connection.end();
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Itinerary not found or access denied.' });
+        }
+
+        res.status(200).json(rows[0]); // Send itinerary details
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error retrieving itinerary details.' });
+    }
+});
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////

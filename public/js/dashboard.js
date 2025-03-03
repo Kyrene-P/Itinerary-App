@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Refresh list when the button is clicked
     refreshButton.addEventListener('click', async () => {
+        // The renderUserList will be removed later on
         renderUserList();
         displayAllItineraries();
     });
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/';
     } else {
         DataModel.setToken(token);
+        // The renderUserList will be removed later on
         renderUserList();
         displayAllItineraries();
     }
@@ -66,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //////////////////////////////////////////
 //FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
-
+//This function allows for all itineraries to be displayed for a certain user
 async function displayAllItineraries() {
     const itineraryListElement = document.getElementById('itineraryList');
     const itineraryCountElement = document.getElementById('itineraryCount');
@@ -74,10 +76,12 @@ async function displayAllItineraries() {
     itineraryListElement.innerHTML = '<div class="loading-message">Loading itineraries...</div>';
 
     try {
+        //connects to DataModal.js
         const itineraries = await DataModel.getItineraries();
 
-        itineraryListElement.innerHTML = ''; // Clear previous content
+        itineraryListElement.innerHTML = ''; // Clear previous content of loading message
 
+        //displayed the user's itineraries
         if (itineraries.length === 0) {
             itineraryListElement.innerHTML = '<p>No itineraries found.</p>';
         } else {
@@ -85,6 +89,7 @@ async function displayAllItineraries() {
                 const listItem = document.createElement('div');
                 listItem.classList.add('itinerary-item');
                 const itineraryLink = document.createElement('a');
+                //the code below allows for the specific itinerary information to be displayed
                 itineraryLink.href = `/dashboard/itinerary?id=${itinerary.id}`;
                 itineraryLink.textContent = itinerary.title || 'Unnamed Itinerary';
                 itineraryLink.classList.add('itinerary-link');
@@ -94,6 +99,7 @@ async function displayAllItineraries() {
             });
         }
 
+        //this changes the "Total Itineraries" on the dashboard.html to a count that's accurate
         itineraryCountElement.textContent = `Total Itineraries: ${itineraries.length}`;
     } catch (error) {
         console.error('Error displaying itineraries:', error);
