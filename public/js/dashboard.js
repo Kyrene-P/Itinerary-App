@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     const logoutButton = document.getElementById('logoutButton');
     const refreshButton = document.getElementById('refreshButton');
+    const addItineraryButton = document.getElementById("addItineraryButton");
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -31,6 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Refresh list when the button is clicked
     refreshButton.addEventListener('click', async () => {
         renderUserList();
+    });
+
+    // User is sent to interary creation page on click
+    addItineraryButton.addEventListener("click", function() {
+        window.location.href = "itinerary.html";
     });
     //////////////////////////////////////////
     //END EVENT LISTENERS
