@@ -69,5 +69,33 @@ const DataModel = (function () {
 
         //ADD MORE FUNCTIONS HERE TO FETCH DATA FROM THE SERVER
         //AND SEND DATA TO THE SERVER AS NEEDED
+
+        getItineraries: async function () {
+            if (!token) {
+                console.error("Token is not set.");
+                return [];
+            }
+
+            try {
+                const response = await fetch('/api/itineraries', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error("Error fetching itineraries:", await response.json());
+                    return [];
+                }
+
+                const data = await response.json();
+                return data.itineraries;
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return [];
+            }
+        },
     };
 })();

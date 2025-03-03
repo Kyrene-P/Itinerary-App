@@ -87,6 +87,46 @@ async function renderUserList() {
         userItem.appendChild(itineraryLink)
         userListElement.appendChild(userItem);
     });
+
+    async function displayAllItineraries() {
+        const itineraryListElement = document.getElementById('itineraryList');
+        const itineraryCountElement = document.getElementById('itineraryCount');
+    
+        itineraryListElement.innerHTML = '<div class="loading-message">Loading itineraries...</div>';
+    
+        try {
+            const itineraries = await DataModel.getItineraries();
+    
+            itineraryListElement.innerHTML = ''; // Clear previous content
+    
+            if (itineraries.length === 0) {
+                itineraryListElement.innerHTML = '<p>No itineraries found.</p>';
+            } else {
+                itineraries.forEach(itinerary => {
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+    
+                    link.href = `/dashboard/itinerary?id=${itinerary.id}`;
+                    link.textContent = itinerary.destination || 'Unnamed Itinerary';
+                    listItem.appendChild(link);
+                    itineraryListElement.appendChild(listItem);
+                });
+            }
+    
+            itineraryCountElement.textContent = `Total Itineraries: ${itineraries.length}`;
+        } catch (error) {
+            console.error('Error displaying itineraries:', error);
+            itineraryListElement.innerHTML = '<p>Failed to load itineraries.</p>';
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        displayAllItineraries(); // Load itineraries when the page loads
+    
+        document.getElementById('refreshButton').addEventListener('click', () => {
+            displayAllItineraries(); // Refresh on button click
+        });
+    });
 }
 //////////////////////////////////////////
 //END FUNCTIONS TO MANIPULATE THE DOM

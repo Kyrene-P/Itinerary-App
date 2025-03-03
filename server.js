@@ -181,6 +181,25 @@ app.get('/api/users', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error retrieving email addresses.' });
     }
 });
+
+//Route: Get All Itineraries for a user
+app.get('/api/itineraries', authenticateToken, async (req, res) => {
+    try {
+        const connection = await createConnection();
+
+        const [rows] = await connection.execute(
+            'SELECT * FROM itineraries WHERE user_email = ?',
+            [req.user.email]
+        );
+
+        await connection.end();
+
+        res.status(200).json({ itineraries: rows });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error retrieving itineraries.' });
+    }
+});
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////
