@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Refresh list when the button is clicked
     refreshButton.addEventListener('click', async () => {
         renderUserList();
+        displayAllItineraries();
     });
 
     // User is sent to interary creation page on click
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         DataModel.setToken(token);
         renderUserList();
+        displayAllItineraries();
     }
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
@@ -65,8 +67,36 @@ document.addEventListener('DOMContentLoaded', () => {
 //FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
 
-async function displayAllItineraries (){
+async function displayAllItineraries() {
+    const itineraryListElement = document.getElementById('itineraryList');
+    const itineraryCountElement = document.getElementById('itineraryCount');
 
+    itineraryListElement.innerHTML = '<div class="loading-message">Loading itineraries...</div>';
+
+    try {
+        const itineraries = await DataModel.getItineraries();
+
+        itineraryListElement.innerHTML = ''; // Clear previous content
+
+        if (itineraries.length === 0) {
+            itineraryListElement.innerHTML = '<p>No itineraries found.</p>';
+        } else {
+            itineraries.forEach(itinerary => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+
+                link.href = `/dashboard/itinerary?id=${itinerary.id}`;
+                link.textContent = itinerary.destination || 'Unnamed Itinerary';
+                listItem.appendChild(link);
+                itineraryListElement.appendChild(listItem);
+            });
+        }
+
+        itineraryCountElement.textContent = `Total Itineraries: ${itineraries.length}`;
+    } catch (error) {
+        console.error('Error displaying itineraries:', error);
+        itineraryListElement.innerHTML = '<p>Failed to load itineraries.</p>';
+    }
 }
 
 //It's current function allows the user's emails to link to iteneraries
@@ -86,46 +116,6 @@ async function renderUserList() {
 
         userItem.appendChild(itineraryLink)
         userListElement.appendChild(userItem);
-    });
-
-    async function displayAllItineraries() {
-        const itineraryListElement = document.getElementById('itineraryList');
-        const itineraryCountElement = document.getElementById('itineraryCount');
-    
-        itineraryListElement.innerHTML = '<div class="loading-message">Loading itineraries...</div>';
-    
-        try {
-            const itineraries = await DataModel.getItineraries();
-    
-            itineraryListElement.innerHTML = ''; // Clear previous content
-    
-            if (itineraries.length === 0) {
-                itineraryListElement.innerHTML = '<p>No itineraries found.</p>';
-            } else {
-                itineraries.forEach(itinerary => {
-                    const listItem = document.createElement('li');
-                    const link = document.createElement('a');
-    
-                    link.href = `/dashboard/itinerary?id=${itinerary.id}`;
-                    link.textContent = itinerary.destination || 'Unnamed Itinerary';
-                    listItem.appendChild(link);
-                    itineraryListElement.appendChild(listItem);
-                });
-            }
-    
-            itineraryCountElement.textContent = `Total Itineraries: ${itineraries.length}`;
-        } catch (error) {
-            console.error('Error displaying itineraries:', error);
-            itineraryListElement.innerHTML = '<p>Failed to load itineraries.</p>';
-        }
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        displayAllItineraries(); // Load itineraries when the page loads
-    
-        document.getElementById('refreshButton').addEventListener('click', () => {
-            displayAllItineraries(); // Refresh on button click
-        });
     });
 }
 //////////////////////////////////////////

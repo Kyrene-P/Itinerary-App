@@ -34,6 +34,7 @@ logonForm.addEventListener('submit', async (event) => {
 
         const result = await response.json();
         if (response.ok) {
+            localStorage.setItem('user-email', email)
             localStorage.setItem('jwtToken', result.token);
             window.location.href = '/dashboard';
         } else {
