@@ -14,7 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     const logoutButton = document.getElementById('logoutButton');
     const refreshButton = document.getElementById('refreshButton');
+
+    //All these buttons handle creating a new Itinerary
     const addItineraryButton = document.getElementById("addItineraryButton");
+    const createItineraryContainer = document.getElementById("createItineraryContainer");
+    const itineraryForm = document.getElementById('itineraryForm');
+    const cancelFormButton = document.getElementById('cancelButton');
+    const statusMessage = document.getElementById('statusMessage');
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -38,7 +44,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // User is sent to interary creation page on click
     addItineraryButton.addEventListener("click", function() {
-        window.location.href = "itinerary.html";
+        createItineraryContainer.style.display = "block";
+    });
+
+    cancelFormButton.addEventListener("click", function(){
+        createItineraryContainer.style.display = "none";
+    })
+
+    itineraryForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const title = document.getElementById('title').value;
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const description = document.getElementById('description').value;
+
+        try{
+            const newItinerary = await DataModel.createItinerary(title, description, startDate, endDate);
+
+            if (newItinerary) {
+                statusMessage.textContent = "Itinerary created successfully!";
+                statusMessage.style.color = "green";
+    
+                // Clear form fields
+                itineraryForm.reset();
+    
+                // Hide form after successful submission
+                setTimeout(() => {
+                    itineraryFormContainer.style.display = "none";
+                    statusMessage.textContent = "";
+                }, 1500);
+    
+                // Refresh itinerary list
+                displayAllItineraries();
+            } else {
+                statusMessage.textContent = "Error creating itinerary.";
+                statusMessage.style.color = "red";
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            statusMessage.textContent = "Something went wrong.";
+            statusMessage.style.color = "red";
+        }
     });
     //////////////////////////////////////////
     //END EVENT LISTENERS

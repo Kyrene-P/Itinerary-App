@@ -126,5 +126,39 @@ const DataModel = (function () {
                 return null;
             }
         },
+
+        createItinerary: async function (title, description, startDate, endDate) {
+            if (!token) {
+                console.error("Token is not set.");
+                return null;
+            }
+
+            try {
+                const response = await fetch('/api/itineraries', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description || '',
+                        start_date: startDate,
+                        end_date: endDate
+                    }),
+                });
+
+                if (!response.ok) {
+                    console.error("Error creating itinerary:", await response.json());
+                    return null;
+                }
+
+                return await response.json(); // Returns itinerary ID
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return null;
+            }
+        },
+
     };
 })();

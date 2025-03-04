@@ -224,6 +224,39 @@ app.get('/api/itineraries/:id', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error retrieving itinerary details.' });
     }
 });
+
+// Route: Create a new itinerary
+app.post('/api/itineraries', authenticateToken, async (req, res) => {
+    const { title, description, start_date, end_date } = req.body;
+
+    // Validate required fields
+    if (!title || !start_date || !end_date) {
+        return res.status(400).json({ message: 'Title, start date, and end date are required.' });
+    }
+
+    try {
+        const connection = await createConnection();
+        const createdAt = new Date();
+        const updatedAt = createdAt;
+
+        const [result] = await connection.execute(
+            `INSERT INTO itineraries (user_email, title, description, start_date, end_date, created_at, updated_at) 
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [req.user.email, title, description || '', start_date, end_date, createdAt, updatedAt]
+        );
+
+        await connection.end();
+
+        res.status(201).json({ 
+            message: 'Itinerary created successfully!', 
+            itineraryId: result.insertId 
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error creating itinerary.' });
+    }
+});
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////
