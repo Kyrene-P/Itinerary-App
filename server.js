@@ -257,6 +257,64 @@ app.post('/api/itineraries', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error creating itinerary.' });
     }
 });
+
+// Route: Update the itinerary with new information
+app.put('/api/itineraries/:id', authenticateToken, async (req, res) => {
+    const { title, description } = req.body;
+    const itineraryId = req.params.id;
+
+    if (!title) {
+        return res.status(400).json({ message: 'Title is required.' });
+    }
+
+    try {
+        const connection = await createConnection();
+        const updatedAt = new Date();
+
+        const [result] = await connection.execute(
+            `UPDATE itineraries 
+             SET title = ?, description = ?, updated_at = ? 
+             WHERE id = ? AND user_email = ?`,
+            [title, description || '', updatedAt, itineraryId, req.user.email]
+        );
+
+        await connection.end();
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Itinerary not found or unauthorized.' });
+        }
+
+        res.status(200).json({ message: 'Itinerary updated successfully!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error updating itinerary.' });
+    }
+});
+
+// Route: Delete an itinerary
+app.delete('/api/itineraries/:id', authenticateToken, async (req, res) => {
+    const itineraryId = req.params.id;
+
+    try {
+        const connection = await createConnection();
+
+        const [result] = await connection.execute(
+            `DELETE FROM itineraries WHERE id = ? AND user_email = ?`,
+            [itineraryId, req.user.email]
+        );
+
+        await connection.end();
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Itinerary not found or unauthorized.' });
+        }
+
+        res.status(200).json({ message: 'Itinerary deleted successfully!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error deleting itinerary.' });
+    }
+});
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////

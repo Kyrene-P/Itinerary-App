@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Refresh list when the button is clicked
     refreshButton.addEventListener('click', async () => {
         // The renderUserList will be removed later on
-        renderUserList();
+        // renderUserList();
         displayAllItineraries();
     });
 
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 // Hide form after successful submission
                 setTimeout(() => {
-                    itineraryFormContainer.style.display = "none";
+                    createItineraryContainer.style.display = "none";
                     statusMessage.textContent = "";
                 }, 1500);
     
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         DataModel.setToken(token);
         // The renderUserList will be removed later on
-        renderUserList();
+        // renderUserList();
         displayAllItineraries();
     }
     //////////////////////////////////////////
@@ -157,22 +157,22 @@ async function displayAllItineraries() {
 //It's current function allows the user's emails to link to iteneraries
 //--This will later be changed to the specific user's page an all their itineraries being displayed--
 //--When a user selects a specific itenerary, it will pull up the plans/schedule--
-async function renderUserList() {
-    const userListElement = document.getElementById('userList');
-    userListElement.innerHTML = '<div class="loading-message">Loading user list...</div>';
-    const users = await DataModel.getUsers(); 
-    users.forEach(user => {
-        const userItem = document.createElement('div');
-        userItem.classList.add('user-item');
-        const itineraryLink = document.createElement('a');
-        itineraryLink.href = `/dashboard/itinerary`;
-        itineraryLink.textContent = user;
-        itineraryLink.classList.add('itinerary-link');
+// async function renderUserList() {
+//     const userListElement = document.getElementById('userList');
+//     userListElement.innerHTML = '<div class="loading-message">Loading user list...</div>';
+//     const users = await DataModel.getUsers(); 
+//     users.forEach(user => {
+//         const userItem = document.createElement('div');
+//         userItem.classList.add('user-item');
+//         const itineraryLink = document.createElement('a');
+//         itineraryLink.href = `/dashboard/itinerary`;
+//         itineraryLink.textContent = user;
+//         itineraryLink.classList.add('itinerary-link');
 
-        userItem.appendChild(itineraryLink)
-        userListElement.appendChild(userItem);
-    });
-}
+//         userItem.appendChild(itineraryLink)
+//         userListElement.appendChild(userItem);
+//     });
+// }
 //////////////////////////////////////////
 //END FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////

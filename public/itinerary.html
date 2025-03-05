@@ -12,10 +12,33 @@
         <div class="header">
             <h1 id="itinerary-title">Itinerary Page</h1>
             <div>
+                <button id="editButton">Edit Itinerary</button>
                 <button id="dashboardButton">Home</button>
             </div>
         </div>
         <p id="itinerary-description">There is no description yet for this itinerary!</p>
+    </div>
+
+    <div id="editItineraryContainer">
+        <div id="editModal" class="modal">
+            <div class="feature-modal">
+                <span class="close" data-modal="editModal">&times;</span>
+                <h2>Edit Itinerary</h2>
+    
+                <form id="editItineraryForm">
+                    <label for="editTitle">Title:</label>
+                    <input type="text" id="editTitle" required>
+                
+                    <label for="editDescription">Description:</label>
+                    <textarea id="editDescription"></textarea>
+                
+                    <button type="submit">Save Changes</button>
+                    <button type="button" id="deleteButton">Delete Itinerary</button>
+                </form>
+    
+                <p id="statusMessage"></p>
+            </div>
+        </div>
     </div>
 
     <div class="search-feature-container">

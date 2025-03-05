@@ -160,5 +160,63 @@ const DataModel = (function () {
             }
         },
 
+        updateItinerary: async function (id, title, description) {
+            if (!token) {
+                console.error("Token is not set.");
+                return null;
+            }
+
+            try {
+                const response = await fetch(`/api/itineraries/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description || ''
+                    }),
+                });
+
+                if (!response.ok) {
+                    console.error("Error updating itinerary:", await response.json());
+                    return null;
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return null;
+            }
+        },
+
+        deleteItinerary: async function (id) {
+            if (!token) {
+                console.error("Token is not set.");
+                return null;
+            }
+
+            try {
+                const response = await fetch(`/api/itineraries/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error("Error deleting itinerary:", await response.json());
+                    return null;
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return null;
+            }
+        },
+
     };
 })();

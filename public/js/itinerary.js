@@ -17,6 +17,65 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/dashboard';
     });
 
+    //This is the form to edit the Itinerary
+    document.getElementById('editItineraryForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const itineraryId = new URLSearchParams(window.location.search).get('id');
+    const title = document.getElementById('editTitle').value;
+    const description = document.getElementById('editDescription').value;
+
+    try {
+        const result = await DataModel.updateItinerary(itineraryId, title, description);
+
+        if (result) {
+            // This addition updates the itinerary when edited
+            document.getElementById('itinerary-title').textContent = title;
+            document.getElementById('itinerary-description').textContent = description;
+
+            // Show success message
+            document.getElementById('statusMessage').textContent = "Itinerary updated successfully!";
+            document.getElementById('statusMessage').style.color = "green";
+
+            // After submitting the edit, it hides the form
+            setTimeout(() => {
+                document.getElementById('editItineraryContainer').style.display = 'none';
+                document.getElementById('editButton').style.display = 'block';
+                document.getElementById('statusMessage').textContent = "";
+            }, 1000);
+        } else {
+            document.getElementById('statusMessage').textContent = "Error updating itinerary.";
+            document.getElementById('statusMessage').style.color = "red";
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        document.getElementById('statusMessage').textContent = "Something went wrong.";
+        document.getElementById('statusMessage').style.color = "red";
+    }
+});
+
+    document.getElementById('deleteButton').addEventListener('click', async function() {
+        const itineraryId = new URLSearchParams(window.location.search).get('id');
+    
+        if (!confirm("Are you sure you want to delete this itinerary?")) {
+            return;
+        }
+    
+        try {
+            const remove = await DataModel.deleteItinerary(itineraryId);
+    
+            if (remove) {
+                alert("Itinerary deleted successfully!");
+                window.location.href = "/dashboard"; // Redirect to dashboard
+            } else {
+                alert("Error deleting itinerary.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong.");
+        }
+    });
+
     //////////////////////////////////////////
     //END EVENT LISTENERS
     //////////////////////////////////////////
@@ -28,13 +87,15 @@ document.addEventListener('DOMContentLoaded', () => {
         moodButton : document.getElementById('moodButton'),
         budgetButton : document.getElementById('budgetButton'),
         inviteButton : document.getElementById('inviteButton'),
-        achievementButton : document.getElementById('achievementButton')
+        achievementButton : document.getElementById('achievementButton'),
+        editButton : document.getElementById('editButton')
     };
     const modals = {
         moodButton : document.getElementById('moodModal'),
         budgetButton : document.getElementById('budgetModal'),
         inviteButton : document.getElementById('inviteModal'),
-        achievementButton : document.getElementById('achievementModal')
+        achievementButton : document.getElementById('achievementModal'),
+        editButton : document.getElementById('editModal')
     };
 
     //The user can press the button for a specific feature and the modal will open
@@ -88,6 +149,9 @@ async function displayItineraryDetails() {
     const itineraryTitleElement = document.getElementById('itinerary-title');
     const itineraryDescriptionElement = document.getElementById('itinerary-description');
 
+    const editTitle = document.getElementById('editTitle');
+    const editDescription = document.getElementById('editDescription');
+
     //Getting the itinerary's id from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const itineraryId = urlParams.get('id');
@@ -107,6 +171,9 @@ async function displayItineraryDetails() {
             return;
         }
 
+        editTitle.value = details.title;
+        editDescription.value = details.description;
+
         //displayed the user's itineraries
         itineraryTitleElement.textContent = details.title || 'Untitled Itinerary';
         itineraryDescriptionElement.textContent = details.description || 'No details available.';
@@ -114,7 +181,5 @@ async function displayItineraryDetails() {
     } catch (error) {
         console.error('Error displaying details:', error);
     }
-
-    
 }
 
