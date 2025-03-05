@@ -154,3 +154,15 @@ h1 {
     text-align: center;
     z-index: 1; /* Sit on top */
 }
+#addItineraryButton {
+    padding: 10px 20px;
+    background-color: #45b6fe;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#addItineraryButton:hover {
+    background-color: #0056b3;
+}
