@@ -73,7 +73,7 @@ h1 {
     height: 100vh; 
 }
 .feature-btn {
-    background-color: #28a745; /* Same green color from logon button */
+    background-color: #007bff; /* Same green color from logon button */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -83,7 +83,7 @@ h1 {
     transition: background-color 0.3s ease; 
 }
 #dashboardButton {
-    background-color: #28a745; 
+    background-color: #808080; 
     color: white;
     border: none;
     padding: 10px 20px;
