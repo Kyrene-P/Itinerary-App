@@ -85,6 +85,27 @@ async function authenticateToken(req, res, next) {
         }
     });
 }
+// generates a random Id for itineraries
+async function generateUniqueId() {
+    let isUnique = false;
+    let itineraryId;
+
+    while (!isUnique) {
+        // Generate a 10-digit random number
+        itineraryId = Math.floor(1000000000 + Math.random() * 9000000000);
+
+        
+        const connection = await createConnection();
+        const [rows] = await connection.execute("SELECT COUNT(*) AS count FROM itineraries WHERE id = ?", [itineraryId]);
+
+        await connection.end(); //close connection
+        if (rows[0].count === 0) {
+            isUnique = true;
+        }
+    }
+
+    return itineraryId;
+}
 /////////////////////////////////////////////////
 //END HELPER FUNCTIONS AND AUTHENTICATION MIDDLEWARE
 /////////////////////////////////////////////////
@@ -235,14 +256,16 @@ app.post('/api/itineraries', authenticateToken, async (req, res) => {
     }
 
     try {
+        const itineraryId = await generateUniqueId();
+
         const connection = await createConnection();
         const createdAt = new Date();
         const updatedAt = createdAt;
 
         const [result] = await connection.execute(
-            `INSERT INTO itineraries (user_email, title, description, start_date, end_date, created_at, updated_at) 
-             VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [req.user.email, title, description || '', start_date, end_date, createdAt, updatedAt]
+            `INSERT INTO itineraries (id, user_email, title, description, start_date, end_date, created_at, updated_at) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [itineraryId, req.user.email, title, description || '', start_date, end_date, createdAt, updatedAt]
         );
 
         await connection.end();

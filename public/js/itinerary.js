@@ -177,6 +177,10 @@ async function displayItineraryDetails() {
         //displayed the user's itineraries
         itineraryTitleElement.textContent = details.title || 'Untitled Itinerary';
         itineraryDescriptionElement.textContent = details.description || 'No details available.';
+        
+        
+        const inviteIdElement = document.getElementById('inviteId');
+        inviteIdElement.textContent = `Your Invite ID: ${itineraryId}`;
 
     } catch (error) {
         console.error('Error displaying details:', error);
