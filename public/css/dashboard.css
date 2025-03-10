@@ -164,3 +164,36 @@ h1 {
 #addItineraryButton:hover {
     background-color: #0056b3;
 }
+.invite-code-container {
+    position: absolute;
+    top: 40px;
+    right: 300px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+#inviteCodeInput {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 180px;
+}
+
+#submitInviteCode {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#submitInviteCode:hover {
+    background-color: #0056b3;
+}
+
+
+
