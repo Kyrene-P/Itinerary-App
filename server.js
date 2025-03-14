@@ -203,24 +203,39 @@ app.get('/api/users', authenticateToken, async (req, res) => {
     }
 });
 
-//Route: Get All Itineraries for a user
+// Route: Get All Itineraries for a user (including joined itineraries)
 app.get('/api/itineraries', authenticateToken, async (req, res) => {
     try {
         const connection = await createConnection();
 
-        const [rows] = await connection.execute(
+        // Fetch itineraries where user is the creator
+        const [ownedItineraries] = await connection.execute(
             'SELECT * FROM itineraries WHERE user_email = ?',
+            [req.user.email]
+        );
+
+        // Fetch itineraries where user is a participant (joined via invite code)
+        const [joinedItineraries] = await connection.execute(
+            `SELECT itineraries.* 
+             FROM itineraries 
+             JOIN itinerary_users ON itineraries.id = itinerary_users.itinerary_id 
+             WHERE itinerary_users.user_email = ?`,
             [req.user.email]
         );
 
         await connection.end();
 
-        res.status(200).json({ itineraries: rows });
+        // Combine both owned and joined itineraries
+        const allItineraries = [...ownedItineraries, ...joinedItineraries];
+
+        res.status(200).json({ itineraries: allItineraries });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error retrieving itineraries.' });
     }
 });
+
+
 
 //Route: Get Information of a Specific Itinerary
 app.get('/api/itineraries/:id', authenticateToken, async (req, res) => {
@@ -338,6 +353,41 @@ app.delete('/api/itineraries/:id', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error deleting itinerary.' });
     }
 });
+app.post('/api/itineraries/join', authenticateToken, async (req, res) => {
+    const { inviteCode } = req.body;
+    if (!inviteCode) {
+        return res.status(400).json({ message: 'Invite code is required.' });
+    }
+
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute('SELECT * FROM itineraries WHERE id = ?', [inviteCode]);
+        if (rows.length === 0) {
+            await connection.end();
+            return res.status(404).json({ message: 'Itinerary not found.' });
+        }
+
+        const [existing] = await connection.execute(
+            'SELECT * FROM itinerary_users WHERE itinerary_id = ? AND user_email = ?',
+            [inviteCode, req.user.email]
+        );
+        if (existing.length > 0) {
+            await connection.end();
+            return res.status(409).json({ message: 'You are already part of this itinerary.' });
+        }
+
+        await connection.execute(
+            'INSERT INTO itinerary_users (itinerary_id, user_email, role) VALUES (?, ?, ?)',
+            [inviteCode, req.user.email, 'member']
+        );
+        await connection.end();
+        res.status(200).json({ message: 'Successfully joined the itinerary!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error joining itinerary.' });
+    }
+});
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////

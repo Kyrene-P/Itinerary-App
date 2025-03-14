@@ -217,6 +217,61 @@ const DataModel = (function () {
                 return null;
             }
         },
+        joinItinerary: async function (inviteCode) {
+            if (!token) {
+                console.error("Token is not set.");
+                return null;
+            }
+
+            try {
+                const response = await fetch('/api/itineraries/join', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ inviteCode }),
+                });
+
+                if (!response.ok) {
+                    console.error("Error joining itinerary:", await response.json());
+                    return null;
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return null;
+            }
+            
+        },
+        getUserItineraries: async function () {
+            if (!token) {
+                console.error("Token is not set.");
+                return [];
+            }
+
+            try {
+                const response = await fetch('/api/user-itineraries', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error("Error fetching user itineraries:", await response.json());
+                    return [];
+                }
+
+                const data = await response.json();
+                return data.itineraries;
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return [];
+            }
+        }
 
     };
 })();

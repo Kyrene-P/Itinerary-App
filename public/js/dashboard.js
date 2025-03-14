@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const itineraryForm = document.getElementById('itineraryForm');
     const cancelFormButton = document.getElementById('cancelButton');
     const statusMessage = document.getElementById('statusMessage');
+    const submitInviteCodeButton = document.getElementById("submitInviteCode");
+    const inviteCodeInput = document.getElementById("inviteCodeInput");
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -85,6 +87,26 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error:", error);
             statusMessage.textContent = "Something went wrong.";
             statusMessage.style.color = "red";
+        }
+    });
+    submitInviteCodeButton.addEventListener("click", async () => {
+        const inviteCode = inviteCodeInput.value.trim();
+        if (!inviteCode) {
+            alert("Please enter a valid invite code.");
+            return;
+        }
+
+        try {
+            const response = await DataModel.joinItinerary(inviteCode);
+            if (response) {
+                alert("Successfully joined the itinerary!");
+                displayAllItineraries();
+            } else {
+                alert("Failed to join the itinerary. Please check the invite code.");
+            }
+        } catch (error) {
+            console.error("Error joining itinerary:", error);
+            alert("An error occurred while joining the itinerary.");
         }
     });
     //////////////////////////////////////////
