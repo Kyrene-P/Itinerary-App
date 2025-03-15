@@ -243,9 +243,13 @@ app.get('/api/itineraries/:id', authenticateToken, async (req, res) => {
         const itineraryId = req.params.id;
         const connection = await createConnection();
 
+        // Fetch the itinerary if the user is the creator OR has joined
         const [rows] = await connection.execute(
-            'SELECT * FROM itineraries WHERE id = ? and user_email = ?',
-            [itineraryId, req.user.email]
+            `SELECT i.* 
+             FROM itineraries i
+             LEFT JOIN itinerary_users iu ON i.id = iu.itinerary_id
+             WHERE i.id = ? AND (i.user_email = ? OR iu.user_email = ?)`,
+            [itineraryId, req.user.email, req.user.email]
         );
 
         await connection.end();
@@ -260,6 +264,7 @@ app.get('/api/itineraries/:id', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error retrieving itinerary details.' });
     }
 });
+
 
 // Route: Create a new itinerary
 app.post('/api/itineraries', authenticateToken, async (req, res) => {
@@ -353,6 +358,7 @@ app.delete('/api/itineraries/:id', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error deleting itinerary.' });
     }
 });
+//Route: Join an itinerary
 app.post('/api/itineraries/join', authenticateToken, async (req, res) => {
     const { inviteCode } = req.body;
     if (!inviteCode) {
