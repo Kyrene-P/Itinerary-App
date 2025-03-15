@@ -114,10 +114,13 @@ h1 {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 60%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 40%;
     margin: 0 auto;
     margin-top: 20px;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
 }
 
 /* The Close Button */
@@ -133,6 +136,47 @@ h1 {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Invite Modal header */
+.feature-modal h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+/* Invite Code */
+#inviteId {
+    display: inline-block;
+    background-color: #f8f9fa;
+    color: #007bff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 2px solid #007bff;
+    letter-spacing: 1px;
+}
+
+/* Invite Modal Buttons Container */
+.invite-modal-buttons {
+    display: flex;
+    justify-content: center; 
+    gap: 10px; 
+    margin-top: 15px; 
+}
+
+/* Individual Button Styles - copy and share code */
+.invite-modal-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 12px; 
+    border-radius: 5px;
+    font-size: 12px; 
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /* Search container stays centered */
