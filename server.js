@@ -341,10 +341,26 @@ app.delete('/api/itineraries/:id', authenticateToken, async (req, res) => {
     try {
         const connection = await createConnection();
 
-        const [result] = await connection.execute(
-            `DELETE FROM itineraries WHERE id = ? AND user_email = ?`,
+        const [isOwner] = await connection.execute(
+            `SELECT * FROM itineraries WHERE id = ? AND user_email = ?`,
             [itineraryId, req.user.email]
         );
+
+        let result;
+
+        if(isOwner.length > 0){
+            // if the User is the owner, the itinerary is deleted from the itineraries table
+            [result] = await connection.execute(
+                `DELETE FROM itineraries WHERE id = ? AND user_email = ?`,
+                [itineraryId, req.user.email]
+            );
+        }else{
+            // if the User is NOT the owner, they are removed from the itinerary_users table
+            [result] = await connection.execute(
+                `DELETE FROM itinerary_users WHERE itinerary_id = ? AND user_email = ?`,
+                [itineraryId, req.user.email]
+            );
+        }
 
         await connection.end();
 
@@ -353,11 +369,13 @@ app.delete('/api/itineraries/:id', authenticateToken, async (req, res) => {
         }
 
         res.status(200).json({ message: 'Itinerary deleted successfully!' });
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error deleting itinerary.' });
     }
 });
+
 //Route: Join an itinerary
 app.post('/api/itineraries/join', authenticateToken, async (req, res) => {
     const { inviteCode } = req.body;
