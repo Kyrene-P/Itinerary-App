@@ -91,8 +91,8 @@ async function generateUniqueId() {
     let itineraryId;
 
     while (!isUnique) {
-        // Generate a 10-digit random number
-        itineraryId = Math.floor(1000000000 + Math.random() * 9000000000);
+        // Generate a 9-digit random number
+        itineraryId = Math.floor(100000000 + Math.random() * 900000000);
 
         
         const connection = await createConnection();
