@@ -15,6 +15,19 @@ body {
     margin-top: 20px;
 }
 
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* Ensures it stays on top */
+    left: 0;
+    top: 0;
+    width: 100vw; /* Makes it span the full viewport width */
+    height: 100vh; /* Makes it span the full viewport height */
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    backdrop-filter: blur(5px); /* Optional: Adds blur effect */
+}
+
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -317,17 +330,13 @@ h1 {
 #filterModal {
     display: none;
     position: fixed;
-    z-index: 1; /* Ensure it appears on top of other elements */
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%); 
-    width: 100%; 
-    max-width: 800px; 
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    text-align: left;
-    overflow-y: auto; /* Allows scrolling if content overflows */
+    z-index: 1000; /* Ensure it's on top */
+    left: 0;
+    top: 0;
+    width: 100vw !important; /* Force full width */
+    height: 100vh !important; /* Force full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    backdrop-filter: blur(5px); /* Optional blur effect */
 }
 
 /* Filter Modal Title */
