@@ -84,18 +84,19 @@ document.addEventListener('DOMContentLoaded', () => {
     //MODALS
     //////////////////////////////////////////
      const buttons = {
-        moodButton : document.getElementById('moodButton'),
-        budgetButton : document.getElementById('budgetButton'),
         inviteButton : document.getElementById('inviteButton'),
         achievementButton : document.getElementById('achievementButton'),
-        editButton : document.getElementById('editButton')
+        editButton : document.getElementById('editButton'),
+        generateRandomButton : document.getElementById('generateRandomButton'),
+        filterActivitiesButton : document.getElementById('filterActivitiesButton')
     };
+
     const modals = {
-        moodButton : document.getElementById('moodModal'),
-        budgetButton : document.getElementById('budgetModal'),
         inviteButton : document.getElementById('inviteModal'),
         achievementButton : document.getElementById('achievementModal'),
-        editButton : document.getElementById('editModal')
+        editButton : document.getElementById('editModal'),
+        generateRandomButton : document.getElementById('randomModal'),
+        filterActivitiesButton : document.getElementById('filterModal')
     };
 
     //The user can press the button for a specific feature and the modal will open

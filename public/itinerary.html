@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Itinerary</title>
     <link rel="stylesheet" href="/css/itinerary.css">
-    <!-- took dashboard css' file, needs to changed later -->
 </head>
 <body>
     <div class="container">
@@ -41,62 +40,80 @@
         </div>
     </div>
 
-    <div class="search-feature-container">
-        <input type="text" id="locationSearch" placeholder="Where to?">
+    <!-- Generate Random Activities and Filter Activities Buttons -->
+    <div class="random-activities-container">
+        <button id="generateRandomButton" class="feature-btn">Generate Random Activities</button>
+        <button id="filterActivitiesButton" class="feature-btn">Filter Activities</button>
+    </div>
+
+    <!-- Generate Random Activities Modal -->
+    <div id="randomModal" class="modal">
+        <div class="feature-modal">
+            <span class="close" data-modal="randomModal">&times;</span>
+            <h2>Generate Random Activities</h2>
+
+            <!-- New Search Bar Inside the Modal -->
+            <label for="randomSearch">Enter location:</label>
+            <input type="text" id="randomSearch" placeholder="Where to?" />
+
+            <label for="randomCount">How many activities?</label>
+            <select id="randomCount">
+                <option value="" disabled selected>Select a number...</option>
+                <option value="1">1 Activity</option>
+                <option value="2">2 Activities</option>
+                <option value="3">3 Activities</option>
+                <option value="4">4 Activities</option>
+                <option value="5">5 Activities</option>
+            </select>
+
+            <button id="confirmRandomButton">Generate</button>
+        </div>
+    </div>
+    
+    <!-- Filter Activities Modal -->
+    <div id="filterModal" class="modal">
+        <div class="feature-modal">
+            <span class="close" data-modal="filterModal">&times;</span>
+            <h2>Filter Activities</h2>
+            
+            <!-- Location Input -->
+            <label for="filterLocation">Enter Location:</label>
+            <input type="text" id="filterLocation" placeholder="Where to?">
+    
+            <!-- Mood Input -->
+            <label for="filterMood">Select Mood:</label>
+            <select id="filterMood">
+                <option value="" disabled selected>Select a mood...</option>
+                <option value="Adventurous">Adventurous</option>
+                <option value="Artsy">Artsy</option>
+            </select>
+            
+            <!-- Budget Selection -->
+            <label for="minBudget">Min Budget:</label>
+            <input type="number" id="minBudget" placeholder="$ Min" min="0" max="10000">
+
+            <label for="maxBudget">Max Budget:</label>
+            <input type="number" id="maxBudget" placeholder="$ Max" min="0" max="10000">
+
+            <button id="applyFiltersButton">Apply Filters</button>
+        </div>
+    </div>
+
+    <div class="feature-buttons-container">
         <div class="feature-buttons">
-            <button class="feature-btn" id="moodButton">Select Mood</button>
-            <button class="feature-btn" id="budgetButton">Budget</button>
             <button class="feature-btn" id="inviteButton">Invite Friends</button>
             <button class="feature-btn" id="achievementButton">View Achievements</button>
         </div>
     </div>
 
-    <!-- This is the Mood Modal -->
-    <div id="moodModal" class="modal">
-        <div class="feature-modal">
-            <span class="close" data-modal="moodModal">&times;</span>
-            <h2>Select Your Mood!</h2>
-            <p>Choose your mood to personalize your itinerary activities</p>
-            
-            <select id="moodDropdown">
-                <option value="" disabled selected>Select a mood...</option>
-                <option value="Relaxing">Relaxing</option>
-                <option value="Adventurous">Adventurous</option>
-                <option value="Artsy">Artsy</option>
-                <option value="Spontaneous">Spontaneous</option>
-            </select>
-    
-            <p><strong>Selected Mood:</strong> <span id="selectedMood">None</span></p>
-        </div>
-    </div>
-    
-    <!-- This is the Budget Modal -->
-    <div id="budgetModal" class="modal">
-        <div class="feature-modal">
-            <span class="close" data-modal="budgetModal">&times;</span>
-            <h2>Select Your Budget!</h2>
-            <p>Enter your minimum and maximum budget.</p>
-    
-            <label for="minBudget">Min Budget:</label>
-            <input type="number" id="minBudget" placeholder="$ Min" min="0" max="10000">
-    
-            <label for="maxBudget">Max Budget:</label>
-            <input type="number" id="maxBudget" placeholder="$ Max" min="0" max="10000">
-    
-            <p><strong>Selected Budget:</strong> <span id="selectedBudget">None</span></p>
-        </div>
-    </div>
-    
-
     <!-- This is the Invite Modal -->
-    <div id ="inviteModal" class="modal">
+    <div id="inviteModal" class="modal">
         <div class="feature-modal">
             <span class="close" data-modal="inviteModal">&times;</span>
             <h2>This is your Invite Code!</h2>
             <p>Share this code to invite friends to join your itinerary!</p>
             <p><strong id="inviteId">Generating...</strong></p>
         
-            <!-- flex box for buttons -->
             <div class="invite-modal-buttons">
                 <button id="copyInviteCode">Copy Code</button>
                 <button id="shareInviteCode">Share Code</button>
@@ -105,7 +122,7 @@
     </div>
 
     <!-- This is the Achievement Modal -->
-    <div id ="achievementModal" class="modal">
+    <div id="achievementModal" class="modal">
         <div class="feature-modal">
             <span class="close" data-modal="achievementModal">&times;</span>
             <h2>View your Achievements!</h2>
