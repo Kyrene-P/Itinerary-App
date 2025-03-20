@@ -271,6 +271,33 @@ const DataModel = (function () {
                 console.error("Error in API call:", error);
                 return [];
             }
+        },
+        getItineraryActivities: async function (itineraryId) {
+            if (!token) {
+                console.error("Token is not set.");
+                return [];
+            }
+        
+            try {
+                const response = await fetch(`/api/itineraries/${itineraryId}/activities`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+        
+                if (!response.ok) {
+                    console.error("Error fetching activities:", await response.json());
+                    return [];
+                }
+        
+                const data = await response.json();
+                return data.activities;
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return [];
+            }
         }
 
     };

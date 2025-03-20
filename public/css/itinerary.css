@@ -402,3 +402,48 @@ label {
 .close:hover {
     color: #333;
 }
+/* Center the Activities Section */
+.activity-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Style the Activities Table */
+#activitiesTable {
+    width: 80%; /* Adjust width as needed */
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header */
+#activitiesTable th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Table Cells */
+#activitiesTable td {
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* Alternate Row Colors for Better Readability */
+#activitiesTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Highlight Row on Hover */
+#activitiesTable tr:hover {
+    background-color: #e2e2e2;
+}

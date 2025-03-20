@@ -411,6 +411,53 @@ app.post('/api/itineraries/join', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error joining itinerary.' });
     }
 });
+// Route: Get filtered activities for a specific itinerary
+app.get('/api/itineraries/:id/activities', authenticateToken, async (req, res) => {
+    const itineraryId = req.params.id;
+    const { mood, minCost, maxCost, limit } = req.query; // Capture optional filters
+
+    try {
+        const connection = await createConnection();
+
+        // Base query
+        let query = `
+            SELECT al.ActivityName, al.ActivityLocation, al.ActivityMood, al.ActivityCost 
+            FROM UserActivities a
+            JOIN itineraries i ON i.id = a.id
+            LEFT JOIN ActivitiesList al ON al.ActivityId = a.ActivityID
+            WHERE a.id = ?
+        `;
+
+        const params = [itineraryId];
+
+        // Apply optional filters dynamically
+        if (mood) {
+            query += ` AND al.ActivityMood = ?`;
+            params.push(mood);
+        }
+        if (minCost) {
+            query += ` AND al.ActivityCost >= ?`;
+            params.push(parseFloat(minCost));
+        }
+        if (maxCost) {
+            query += ` AND al.ActivityCost <= ?`;
+            params.push(parseFloat(maxCost));
+        }
+        if (limit) {
+            query += ` ORDER BY RAND() LIMIT ?`; // Randomly select activities
+            params.push(parseInt(limit));
+        }
+
+        const [activities] = await connection.execute(query, params);
+        await connection.end();
+
+        res.status(200).json({ activities });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error retrieving itinerary activities.' });
+    }
+});
+
 
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS

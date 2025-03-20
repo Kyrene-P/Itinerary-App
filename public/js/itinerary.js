@@ -149,11 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
 async function displayItineraryDetails() {
     const itineraryTitleElement = document.getElementById('itinerary-title');
     const itineraryDescriptionElement = document.getElementById('itinerary-description');
+    const activitiesTableBody = document.getElementById('activitiesTableBody');
 
-    const editTitle = document.getElementById('editTitle');
-    const editDescription = document.getElementById('editDescription');
-
-    //Getting the itinerary's id from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const itineraryId = urlParams.get('id');
 
@@ -163,28 +160,36 @@ async function displayItineraryDetails() {
     }
 
     try {
-        //connects to DataModal.js
         const details = await DataModel.getDetails(itineraryId);
-
         if (!details) {
             itineraryTitleElement.textContent = 'Itinerary not found';
             itineraryDescriptionElement.textContent = '';
             return;
         }
 
-        editTitle.value = details.title;
-        editDescription.value = details.description;
-
-        //displayed the user's itineraries
         itineraryTitleElement.textContent = details.title || 'Untitled Itinerary';
         itineraryDescriptionElement.textContent = details.description || 'No details available.';
-        
-        
-        const inviteIdElement = document.getElementById('inviteId');
-        inviteIdElement.textContent = `Your Invite ID: ${itineraryId}`;
 
+        // Fetch activities and populate the table
+        const activities = await DataModel.getItineraryActivities(itineraryId);
+        activitiesTableBody.innerHTML = '';
+
+        if (activities.length === 0) {
+            activitiesTableBody.innerHTML = '<tr><td colspan="4">No activities found.</td></tr>';
+        } else {
+            activities.forEach(activity => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${activity.ActivityName}</td>
+                    <td>${activity.ActivityLocation}</td>
+                    <td>${activity.ActivityMood}</td>
+                    <td>${activity.ActivityCost}</td>
+                `;
+                activitiesTableBody.appendChild(row);
+            });
+        }
     } catch (error) {
-        console.error('Error displaying details:', error);
+        console.error('Error displaying itinerary details:', error);
     }
 }
 
