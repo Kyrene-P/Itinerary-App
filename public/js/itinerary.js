@@ -145,6 +145,34 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 //END OF DOMCONTENTLOADED
 
+//Sets the filters when the apply button is pressed
+async function setFilters(){
+    const mood = document.getElementById('filterMood').value;
+    const min = document.getElementById('minBudget').value;
+    const max= document.getElementById('maxBudget').value;
+    const location = document.getElementById('filterLocation').value;
+    const filters = {
+        location: location ? location : null,
+        mood: mood ? mood : null,  // If mood is not selected, store as null
+        minCost: min ? parseFloat(min) : null,  // If min is empty, store as null
+        maxCost: max ? parseFloat(max) : null  // If max is empty, store as null
+    };
+
+    
+    window.filters = filters;
+}
+
+async function generateRandom(){
+    
+    const limitValue = document.getElementById('randomCount').value;
+    const limit = limitValue ? parseInt(limitValue) : 1;  // Default to 3 if no valid limit is selected
+    const { location, mood, minCost, maxCost } = window.filters || {};
+    const urlParams = new URLSearchParams(window.location.search);
+    const itineraryId = urlParams.get('id');
+    DataModel.postItineraryActivities(limit, itineraryId, location, mood, minCost, maxCost);
+    displayItineraryDetails();
+}
+
 //This allows the title and description of the itinerary page to reflect what's in the database
 async function displayItineraryDetails() {
     const itineraryTitleElement = document.getElementById('itinerary-title');

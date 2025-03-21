@@ -414,7 +414,6 @@ app.post('/api/itineraries/join', authenticateToken, async (req, res) => {
 // Route: Get filtered activities for a specific itinerary
 app.get('/api/itineraries/:id/activities', authenticateToken, async (req, res) => {
     const itineraryId = req.params.id;
-    const { mood, minCost, maxCost, limit } = req.query; // Capture optional filters
 
     try {
         const connection = await createConnection();
@@ -430,24 +429,6 @@ app.get('/api/itineraries/:id/activities', authenticateToken, async (req, res) =
 
         const params = [itineraryId];
 
-        // Apply optional filters dynamically
-        if (mood) {
-            query += ` AND al.ActivityMood = ?`;
-            params.push(mood);
-        }
-        if (minCost) {
-            query += ` AND al.ActivityCost >= ?`;
-            params.push(parseFloat(minCost));
-        }
-        if (maxCost) {
-            query += ` AND al.ActivityCost <= ?`;
-            params.push(parseFloat(maxCost));
-        }
-        if (limit) {
-            query += ` ORDER BY RAND() LIMIT ?`; // Randomly select activities
-            params.push(parseInt(limit));
-        }
-
         const [activities] = await connection.execute(query, params);
         await connection.end();
 
@@ -458,6 +439,58 @@ app.get('/api/itineraries/:id/activities', authenticateToken, async (req, res) =
     }
 });
 
+//Route: add activities
+app.post('/api/itineraries/:id/activities', authenticateToken, async (req, res) => {
+    const itineraryId = req.params.id;
+    const { limit, location, mood, minCost, maxCost } = req.body; // Filters
+
+    try {
+        const connection = await createConnection();
+
+        // Query 5 random activities from ActivitiesList
+        let query = `
+            SELECT ActivityId FROM ActivitiesList
+            WHERE 1=1
+        `;
+
+        const params = [];
+         // Apply optional filters dynamically
+        if (location) {
+            query += ` AND ActivityLocation = ?`;
+            params.push(location);
+        }
+        if (mood) {
+            query += ` AND ActivityMood = ?`;
+            params.push(mood);
+        }
+        if (minCost) {
+            query += ` AND ActivityCost >= ?`;
+            params.push(parseFloat(minCost));
+        }
+        if (maxCost) {
+            query += ` AND ActivityCost <= ?`;
+            params.push(parseFloat(maxCost));
+        }
+
+        query += ` ORDER BY RAND() LIMIT ?`;
+        params.push(parseInt(limit));
+
+        const [activities] = await connection.execute(query, params);
+
+        // Insert selected activities into UserActivities
+        for (const activity of activities) {
+            await connection.execute(
+                `INSERT INTO UserActivities (id, ActivityId) VALUES (?, ?)`,
+                [itineraryId, activity.ActivityId]
+            );
+        }
+
+        res.status(201).json({ message: 'Activities added successfully!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error adding activities' });
+    }
+});
 
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS

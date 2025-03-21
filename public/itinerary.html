@@ -90,9 +90,7 @@
             <span class="close" data-modal="randomModal">&times;</span>
             <h2>Generate Random Activities</h2>
 
-            <!-- New Search Bar Inside the Modal -->
-            <label for="randomSearch">Enter location:</label>
-            <input type="text" id="randomSearch" placeholder="Where to?" />
+            
 
             <label for="randomCount">How many activities?</label>
             <select id="randomCount">
@@ -104,7 +102,7 @@
                 <option value="5">5 Activities</option>
             </select>
 
-            <button id="confirmRandomButton">Generate</button>
+            <button id="confirmRandomButton" onclick ="generateRandom()">Generate</button>
         </div>
     </div>
     
@@ -133,7 +131,7 @@
             <label for="maxBudget">Max Budget:</label>
             <input type="number" id="maxBudget" placeholder="$ Max" min="0" max="10000">
 
-            <button id="applyFiltersButton">Apply Filters</button>
+            <button id="applyFiltersButton"onclick="setFilters()">Apply Filters</button>
         </div>
     </div>
 

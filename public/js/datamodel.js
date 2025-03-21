@@ -71,6 +71,7 @@ const DataModel = (function () {
         //AND SEND DATA TO THE SERVER AS NEEDED
 
         //This gets the itinerary information that is displayed on the dashboard
+ 
         getItineraries: async function () {
             if (!token) {
                 console.error("Token is not set.");
@@ -272,6 +273,41 @@ const DataModel = (function () {
                 return [];
             }
         },
+        postItineraryActivities: async function (limit, itineraryId, location, mood, minCost, maxCost){
+            if (!token) {
+                console.error("Token is not set.");
+                return [];
+            }
+        
+            try {
+                const response = await fetch(`/api/itineraries/${itineraryId}/activities`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        location: location,
+                        mood: mood,
+                        minCost: minCost,
+                        maxCost: maxCost,
+                        limit: limit  // You can also dynamically adjust the limit if needed
+                    }),
+                });
+        
+                if (!response.ok) {
+                    console.error("Error fetching activities:", await response.json());
+                    return [];
+                }
+        
+                const data = await response.json();
+                return data.activities;
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return [];
+            }
+        },
+
         getItineraryActivities: async function (itineraryId) {
             if (!token) {
                 console.error("Token is not set.");
