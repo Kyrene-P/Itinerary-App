@@ -235,6 +235,56 @@ h1 {
     background-color: #0056b3;
 }
 
+#editItineraryForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns all form elements to the right */
+}
+
+#editItineraryForm label {
+    font-size: 16px;
+    font-weight: bold;
+    padding-top: 10px;
+    color: #007bff;
+    text-align: left; /* Ensures labels are left-aligned */
+    display: block;
+    width: 100%;
+    max-width: 400px; /* Keep it from stretching too wide */
+}
+
+#editTitle, 
+#editDescription {
+    width: 90%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#editItineraryForm .button-group {
+    display: flex;
+    gap: 10px; 
+    margin-top: 15px; 
+    width: 100%;
+    justify-content: center;
+}
+
+/* General Button Styling */
+#editItineraryForm button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    min-width: 120px; 
+}
+
 /* Generate Random Activities and Filter Activities Button */
 .random-activities-container {
     display: flex;
@@ -402,6 +452,7 @@ label {
 .close:hover {
     color: #333;
 }
+
 /* Center the Activities Section */
 .activity-section {
     display: flex;
