@@ -197,6 +197,8 @@ async function displayItineraryDetails() {
 
         itineraryTitleElement.textContent = details.title || 'Untitled Itinerary';
         itineraryDescriptionElement.textContent = details.description || 'No details available.';
+        const inviteIdElement = document.getElementById('inviteId');
+        inviteIdElement.textContent = `Your Invite ID: ${itineraryId}`;
 
         // Fetch activities and populate the table
         const activities = await DataModel.getItineraryActivities(itineraryId);
