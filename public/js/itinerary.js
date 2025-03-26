@@ -160,6 +160,9 @@ async function setFilters(){
 
     
     window.filters = filters;
+
+    // modal closes after applying filters
+    document.getElementById('filterModal').style.display = 'none';
 }
 
 async function generateRandom(){
