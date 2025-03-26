@@ -213,16 +213,43 @@ async function displayItineraryDetails() {
             activities.forEach(activity => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${activity.ActivityName}</td>
+                    <td class="open-modal">${activity.ActivityName}</td>
                     <td>${activity.ActivityLocation}</td>
                     <td>${activity.ActivityMood}</td>
                     <td>${activity.ActivityCost}</td>
                 `;
                 activitiesTableBody.appendChild(row);
+
+                row.querySelector('.open-modal').addEventListener('click', () => {
+                    openActivityModal(activity);
+                });
             });
         }
     } catch (error) {
         console.error('Error displaying itinerary details:', error);
     }
 }
+
+// This handles the activity modal
+function openActivityModal(activity) {
+    const activityModal = document.getElementById('activityModal');
+
+    document.getElementById('modalActivityName').textContent = activity.ActivityName;
+    
+    // Show modal
+    activityModal.style.display = 'block';
+}
+
+// This allows the modal to be closed when clicking the "x"
+document.getElementById('closeActivityModal').addEventListener('click', () => {
+    document.getElementById('activityModal').style.display = 'none';
+});
+
+// This closes the modal when clicking outside the modal
+window.addEventListener('click', (event) => {
+    const activityModal = document.getElementById('activityModal');
+    if (event.target === activityModal) {
+        activityModal.style.display = 'none';
+    }
+});
 
