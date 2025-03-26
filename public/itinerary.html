@@ -31,8 +31,11 @@
                     <label for="editDescription">Description:</label>
                     <textarea id="editDescription"></textarea>
                 
-                    <button type="submit">Save Changes</button>
-                    <button type="button" id="deleteButton">Delete Itinerary</button>
+                    <!-- Button container -->
+                    <div class="button-group">
+                        <button type="submit">Save Changes</button>
+                        <button type="button" id="deleteButton">Delete Itinerary</button>
+                    </div>
                 </form>
     
                 <p id="statusMessage"></p>
@@ -55,6 +58,7 @@
                     <th>Location</th>
                     <th>Mood</th>
                     <th>Cost ($)</th>
+                    <th>Rating ⭐</th>
                 </tr>
             </thead>
             <tbody id="activitiesTableBody">
@@ -63,6 +67,7 @@
                    <td>Loading Location...</td>
                    <td>Loading Mood...</td>
                    <td>Loading Cost...</td>
+                   <td>Loading Rating...</td>
                 </tr>
             </tbody>
         </table>
