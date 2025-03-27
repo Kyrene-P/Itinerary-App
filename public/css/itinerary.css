@@ -498,3 +498,33 @@ label {
 #activitiesTable tr:hover {
     background-color: #e2e2e2;
 }
+#submitRatingButton {
+    margin-top: 10px; 
+}
+.feature-modal {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+#submitRatingButton {
+    display: block;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+
+#submitRatingButton:hover {
+    background-color: #0056b3;
+}
+#rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 5px; 
+    margin-bottom: 15px; 
+}
