@@ -420,12 +420,17 @@ app.get('/api/itineraries/:id/activities', authenticateToken, async (req, res) =
 
         // Base query
         let query = `
-            SELECT al.ActivityName, al.ActivityLocation, al.ActivityMood, al.ActivityCost 
-            FROM UserActivities a
-            JOIN itineraries i ON i.id = a.id
-            LEFT JOIN ActivitiesList al ON al.ActivityId = a.ActivityID
-            WHERE a.id = ?
-        `;
+    SELECT 
+        al.ActivityId, al.ActivityName, al.ActivityLocation, al.ActivityMood, al.ActivityCost,
+        ROUND(AVG(ar.rating), 1) AS averageRating
+    FROM UserActivities a
+    JOIN itineraries i ON i.id = a.id
+    LEFT JOIN ActivitiesList al ON al.ActivityId = a.ActivityID
+    LEFT JOIN ActivityRatings ar ON ar.ActivityID = al.ActivityId
+    WHERE a.id = ?
+    GROUP BY al.ActivityId
+`;
+
 
         const params = [itineraryId];
 
@@ -491,6 +496,69 @@ app.post('/api/itineraries/:id/activities', authenticateToken, async (req, res) 
         res.status(500).json({ error: 'Error adding activities' });
     }
 });
+//Route: Activity Ratings
+app.post('/api/activities/:activityId/rate', authenticateToken, async (req, res) => {
+    const { activityId } = req.params;
+    const { rating } = req.body;
+    const email = req.user.email;
+
+    if (!rating || rating < 0.5 || rating > 5) {
+        return res.status(400).json({ message: 'Rating must be between 0.5 and 5.0' });
+    }
+
+    try {
+        const connection = await createConnection();
+
+        // Check if user has already rated the activity
+        const [existing] = await connection.execute(
+            'SELECT * FROM ActivityRatings WHERE email = ? AND ActivityID = ?',
+            [email, activityId]
+        );
+
+        if (existing.length > 0) {
+            // Update the existing rating
+            await connection.execute(
+                'UPDATE ActivityRatings SET rating = ? WHERE email = ? AND ActivityID = ?',
+                [rating, email, activityId]
+            );
+        } else {
+            // Insert new rating
+            await connection.execute(
+                'INSERT INTO ActivityRatings (email, ActivityID, rating) VALUES (?, ?, ?)',
+                [email, activityId, rating]
+            );
+        }
+
+        await connection.end();
+        res.status(200).json({ message: 'Rating submitted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error submitting rating' });
+    }
+});
+app.get('/api/activities/:activityId/rating', authenticateToken, async (req, res) => {
+    const { activityId } = req.params;
+
+    try {
+        const connection = await createConnection();
+
+        const [rows] = await connection.execute(
+            `SELECT 
+                (SELECT AVG(rating) FROM ActivityRatings WHERE ActivityID = ?) AS averageRating,
+                (SELECT rating FROM ActivityRatings WHERE ActivityID = ? AND email = ?) AS userRating`,
+            [activityId, activityId, req.user.email]
+        );
+
+        await connection.end();
+
+        const average = rows[0].averageRating;
+        res.status(200).json({ averageRating: average ? parseFloat(average.toFixed(1)) : null });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching rating' });
+    }
+});
+
 
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
