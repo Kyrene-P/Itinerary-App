@@ -225,4 +225,3 @@ async function displayItineraryDetails() {
         console.error('Error displaying itinerary details:', error);
     }
 }
-
