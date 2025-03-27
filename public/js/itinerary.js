@@ -75,6 +75,45 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Something went wrong.");
         }
     });
+    //Submit Rating button function
+    document.getElementById('submitRatingButton').addEventListener('click', async () => {
+        const status = document.getElementById('ratingStatusMessage');
+    
+        if (!selectedRating || !currentActivityId) {
+            status.textContent = 'Please select a rating.';
+            status.style.color = 'red';
+            return;
+        }
+    
+        try {
+            const response = await fetch(`/api/activities/${currentActivityId}/rate`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': localStorage.getItem('jwtToken'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ rating: selectedRating }),
+            });
+    
+            const result = await response.json();
+    
+            if (!response.ok) {
+                status.textContent = result.message || 'Rating failed.';
+                status.style.color = 'red';
+            } else {
+                status.textContent = 'Rating submitted!';
+                status.style.color = 'green';
+    
+                // Refresh the activities table with updated average ratings
+                displayItineraryDetails();
+            }
+        } catch (err) {
+            console.error(err);
+            status.textContent = 'Error submitting rating.';
+            status.style.color = 'red';
+        }
+    });
+    
 
     //////////////////////////////////////////
     //END EVENT LISTENERS
@@ -217,7 +256,8 @@ async function displayItineraryDetails() {
                     <td>${activity.ActivityLocation}</td>
                     <td>${activity.ActivityMood}</td>
                     <td>${activity.ActivityCost}</td>
-                `;
+                    <td>${activity.averageRating || 'Not rated'}</td>
+                     `;
                 activitiesTableBody.appendChild(row);
 
                 row.querySelector('.open-modal').addEventListener('click', () => {
@@ -231,18 +271,107 @@ async function displayItineraryDetails() {
 }
 
 // This handles the activity modal
-function openActivityModal(activity) {
-    const activityModal = document.getElementById('activityModal');
+let currentActivityId = null;
+let selectedRating = 0;
 
+async function openActivityModal(activity) {
+    const activityModal = document.getElementById('activityModal');
+    currentActivityId = activity.ActivityId;
     document.getElementById('modalActivityName').textContent = activity.ActivityName;
-    
-    // Show modal
+
+    selectedRating = 0;
+
+    try {
+        const response = await fetch(`/api/activities/${currentActivityId}/rating`, {
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('jwtToken')
+            }
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.userRating) {
+            selectedRating = result.userRating;
+        }
+    } catch (err) {
+        console.error('Error fetching existing rating:', err);
+    }
+
+    generateStars(); // create stars
+    highlightStars(selectedRating); // highlight based on userRating
     activityModal.style.display = 'block';
 }
+
+//Generate stars
+function generateStars() {
+    const container = document.getElementById('rating-stars');
+    container.innerHTML = '';
+    selectedRating = 0;
+
+    for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+        star.classList.add('star');
+        star.dataset.index = i;
+
+        const leftZone = document.createElement('div');
+        leftZone.classList.add('star-zone', 'left');
+        leftZone.addEventListener('mouseenter', () => highlightStars(i - 0.5));
+        leftZone.addEventListener('click', () => {
+            selectedRating = i - 0.5;
+            highlightStars(selectedRating);
+        });
+
+        const rightZone = document.createElement('div');
+        rightZone.classList.add('star-zone', 'right');
+        rightZone.addEventListener('mouseenter', () => highlightStars(i));
+        rightZone.addEventListener('click', () => {
+            selectedRating = i;
+            highlightStars(selectedRating);
+        });
+
+        const starWrapper = document.createElement('div');
+        starWrapper.classList.add('star-wrapper');
+        star.textContent = '★';
+
+        starWrapper.appendChild(star);
+        starWrapper.appendChild(leftZone);
+        starWrapper.appendChild(rightZone);
+        container.appendChild(starWrapper);
+    }
+
+    container.addEventListener('mouseleave', () => highlightStars(selectedRating));
+}
+
+
+
+//Highlight stars when selected
+function highlightStars(value) {
+    const stars = document.querySelectorAll('.star');
+
+    stars.forEach((star, index) => {
+        const starIndex = index + 1;
+
+        star.style.color = 'lightgray';
+        star.style.background = '';
+        star.style.webkitBackgroundClip = '';
+        star.style.webkitTextFillColor = '';
+
+        if (value >= starIndex) {
+            star.style.color = 'gold';
+        } else if (value >= starIndex - 0.5) {
+            star.style.background = 'linear-gradient(to right, gold 50%, lightgray 50%)';
+            star.style.webkitBackgroundClip = 'text';
+            star.style.webkitTextFillColor = 'transparent';
+        }
+    });
+}
+
 
 // This allows the modal to be closed when clicking the "x"
 document.getElementById('closeActivityModal').addEventListener('click', () => {
     document.getElementById('activityModal').style.display = 'none';
+    document.getElementById('ratingStatusMessage').textContent = '';
 });
 
 // This closes the modal when clicking outside the modal
@@ -250,6 +379,7 @@ window.addEventListener('click', (event) => {
     const activityModal = document.getElementById('activityModal');
     if (event.target === activityModal) {
         activityModal.style.display = 'none';
+        document.getElementById('ratingStatusMessage').textContent = '';
     }
 });
 

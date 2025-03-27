@@ -5,6 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Itinerary</title>
     <link rel="stylesheet" href="/css/itinerary.css">
+    <style>
+ .stars {
+    display: flex;
+    gap: 5px;
+}
+
+.star-wrapper {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.star {
+    font-size: 30px;
+    color: lightgray;
+    display: block;
+    text-align: center;
+    transition: color 0.2s ease;
+}
+
+.star-zone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 2;
+}
+.star-zone.left { left: 0; }
+.star-zone.right { right: 0; }
+
+    </style>    
 </head>
 <body>
     <div class="container">
@@ -101,7 +134,11 @@
             <span class="close" id="closeActivityModal">&times;</span>
             <h2>Rate the Activity!</h2>
             <p><strong>Activity Name:</strong> <span id="modalActivityName"></span></p>
-            <p>This is where you can add code!</p>
+            <div id="rating-stars" class="stars">
+                <!-- Stars will be dynamically added by JS -->
+            </div>
+            <button id="submitRatingButton">Submit Rating</button>
+            <p id="ratingStatusMessage"></p>
         </div>
     </div>
     
