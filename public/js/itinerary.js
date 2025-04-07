@@ -4,6 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     //ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
     const dashboardButton = document.getElementById('dashboardButton');
+
+    // activities table is cleared when 'clear activities' button is clicked
+    const clearActivitiesButton = document.getElementById('clearActivitiesButton');
+    if (clearActivitiesButton) {
+        clearActivitiesButton.addEventListener('click', () => {
+            const activitiesTableBody = document.getElementById('activitiesTableBody');
+            activitiesTableBody.innerHTML = `
+                <tr>
+                    <td colspan="5">No activities found.</td>
+                </tr>
+            `;
+        });
+}
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -75,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Something went wrong.");
         }
     });
+
     //Submit Rating button function
     document.getElementById('submitRatingButton').addEventListener('click', async () => {
         const status = document.getElementById('ratingStatusMessage');
@@ -127,7 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
         achievementButton : document.getElementById('achievementButton'),
         editButton : document.getElementById('editButton'),
         generateRandomButton : document.getElementById('generateRandomButton'),
-        filterActivitiesButton : document.getElementById('filterActivitiesButton')
+        filterActivitiesButton : document.getElementById('filterActivitiesButton'),
+        clearActivitiesButton : document.getElementById('clearActivitiesButton')
     };
 
     const modals = {
