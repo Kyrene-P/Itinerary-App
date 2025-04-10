@@ -233,6 +233,7 @@ async function generateRandom(){
 //This allows the title and description of the itinerary page to reflect what's in the database
 async function displayItineraryDetails() {
     const itineraryTitleElement = document.getElementById('itinerary-title');
+    const itineraryTime = document.getElementById('itinerary-time');
     const itineraryDescriptionElement = document.getElementById('itinerary-description');
     const activitiesTableBody = document.getElementById('activitiesTableBody');
 
@@ -254,6 +255,12 @@ async function displayItineraryDetails() {
 
         itineraryTitleElement.textContent = details.title || 'Untitled Itinerary';
         itineraryDescriptionElement.textContent = details.description || 'No details available.';
+
+        // formating the time
+        const date = new Date(details.start_date);
+        const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        itineraryTime.textContent = formattedTime || 'To Be Determined';
+
         const inviteIdElement = document.getElementById('inviteId');
         inviteIdElement.textContent = `Your Invite ID: ${itineraryId}`;
 
