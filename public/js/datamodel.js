@@ -128,7 +128,7 @@ const DataModel = (function () {
             }
         },
 
-        createItinerary: async function (title, description, startDate, endDate) {
+        createItinerary: async function (title, description, startDate, endDate, time) {
             if (!token) {
                 console.error("Token is not set.");
                 return null;
@@ -144,7 +144,7 @@ const DataModel = (function () {
                     body: JSON.stringify({
                         title: title,
                         description: description || '',
-                        start_date: startDate,
+                        start_date: `${startDate}T${time}`,
                         end_date: endDate
                     }),
                 });
