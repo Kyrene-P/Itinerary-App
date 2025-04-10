@@ -59,10 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = document.getElementById('title').value;
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
+        const time = document.getElementById("time").value;
         const description = document.getElementById('description').value;
 
         try{
-            const newItinerary = await DataModel.createItinerary(title, description, startDate, endDate);
+            const newItinerary = await DataModel.createItinerary(title, description, startDate, endDate, time);
 
             if (newItinerary) {
                 statusMessage.textContent = "Itinerary created successfully!";
@@ -137,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //////////////////////////////////////////
 //FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
+
 //This function allows for all itineraries to be displayed for a certain user
 async function displayAllItineraries() {
     const itineraryListElement = document.getElementById('itineraryList');
@@ -145,36 +147,59 @@ async function displayAllItineraries() {
     itineraryListElement.innerHTML = '<div class="loading-message">Loading itineraries...</div>';
 
     try {
-        //connects to DataModal.js
+        // Fetch itineraries from DataModel.js
         const itineraries = await DataModel.getItineraries();
 
-        itineraryListElement.innerHTML = ''; // Clear previous content of loading message
+        itineraryListElement.innerHTML = ''; // Clear previous loading message
 
-        //displayed the user's itineraries
+        // Display the user's itineraries
         if (itineraries.length === 0) {
             itineraryListElement.innerHTML = '<p>No itineraries found.</p>';
         } else {
             itineraries.forEach(itinerary => {
+                console.log('Itinerary:', itinerary); // 
+            
                 const listItem = document.createElement('div');
                 listItem.classList.add('itinerary-item');
+            
                 const itineraryLink = document.createElement('a');
-                //the code below allows for the specific itinerary information to be displayed
                 itineraryLink.href = `/dashboard/itinerary?id=${itinerary.id}`;
-                itineraryLink.textContent = itinerary.title || 'Unnamed Itinerary';
                 itineraryLink.classList.add('itinerary-link');
-
+            
+                // Create a container for the title and start date
+                const textContainer = document.createElement('div');
+                textContainer.classList.add('itinerary-text-container');
+            
+                // Title span
+                const titleSpan = document.createElement('span');
+                titleSpan.textContent = itinerary.title || 'Unnamed Itinerary';
+            
+                // Start Date span (display startDate)
+                const startDateSpan = document.createElement('span');
+                const formattedStartDate = new Date(itinerary.startDate).toLocaleDateString(); // Format the startDate
+                startDateSpan.textContent = formattedStartDate || 'Date not available';
+                startDateSpan.classList.add('itinerary-date'); // Renamed class to 'itinerary-date'
+            
+                // Append the title and start date spans to the container
+                textContainer.appendChild(titleSpan);
+                textContainer.appendChild(startDateSpan);
+            
+                // Append the text container to the itinerary link
+                itineraryLink.appendChild(textContainer);
+            
                 listItem.appendChild(itineraryLink);
                 itineraryListElement.appendChild(listItem);
             });
         }
 
-        //this changes the "Total Itineraries" on the dashboard.html to a count that's accurate
+        // Update the itinerary count
         itineraryCountElement.textContent = `Total Itineraries: ${itineraries.length}`;
     } catch (error) {
         console.error('Error displaying itineraries:', error);
         itineraryListElement.innerHTML = '<p>Failed to load itineraries.</p>';
     }
 }
+
 
 //It's current function allows the user's emails to link to iteneraries
 //--This will later be changed to the specific user's page an all their itineraries being displayed--
