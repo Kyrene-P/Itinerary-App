@@ -176,7 +176,7 @@ async function displayAllItineraries() {
             
                 // Start Date span (display startDate)
                 const startDateSpan = document.createElement('span');
-                const formattedStartDate = new Date(itinerary.startDate).toLocaleDateString(); // Format the startDate
+                const formattedStartDate = new Date(itinerary.start_date).toLocaleDateString(); // Format the startDate
                 startDateSpan.textContent = formattedStartDate || 'Date not available';
                 startDateSpan.classList.add('itinerary-date'); // Renamed class to 'itinerary-date'
             
