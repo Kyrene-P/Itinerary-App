@@ -421,7 +421,7 @@ app.get('/api/itineraries/:id/activities', authenticateToken, async (req, res) =
         // Base query
         let query = `
     SELECT 
-        al.ActivityId, al.ActivityName, al.ActivityLocation, al.ActivityMood, al.ActivityCost,
+        al.ActivityId, al.ActivityName, al.ActivityLocation, al.ActivityCity, al.ActivityMood, al.ActivityCost,
         ROUND(AVG(ar.rating), 1) AS averageRating
     FROM UserActivities a
     JOIN itineraries i ON i.id = a.id

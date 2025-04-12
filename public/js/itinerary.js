@@ -275,7 +275,7 @@ async function displayItineraryDetails() {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="open-modal">${activity.ActivityName}</td>
-                    <td>${activity.ActivityLocation}</td>
+                    <td>${activity.ActivityCity}, ${activity.ActivityLocation}</td>
                     <td>${activity.ActivityMood}</td>
                     <td>${activity.ActivityCost}</td>
                     <td>${activity.averageRating || 'Not rated'}</td>
