@@ -200,33 +200,35 @@ document.addEventListener('DOMContentLoaded', () => {
 //END OF DOMCONTENTLOADED
 
 //Sets the filters when the apply button is pressed
-async function setFilters(){
+async function setFilters() {
     const mood = document.getElementById('filterMood').value;
     const min = document.getElementById('minBudget').value;
-    const max= document.getElementById('maxBudget').value;
-    const location = document.getElementById('filterLocation').value;
+    const max = document.getElementById('maxBudget').value;
+
+    const cityCheckboxes = document.querySelectorAll('#cityCheckboxes input[type="checkbox"]:checked');
+    const selectedCities = Array.from(cityCheckboxes).map(cb => cb.value);
+
     const filters = {
-        location: location ? location : null,
-        mood: mood ? mood : null,  // If mood is not selected, store as null
-        minCost: min ? parseFloat(min) : null,  // If min is empty, store as null
-        maxCost: max ? parseFloat(max) : null  // If max is empty, store as null
+        cities: selectedCities.length > 0 ? selectedCities : null,
+        mood: mood || null,
+        minCost: min ? parseFloat(min) : null,
+        maxCost: max ? parseFloat(max) : null
     };
 
-    
     window.filters = filters;
 
-    // modal closes after applying filters
     document.getElementById('filterModal').style.display = 'none';
 }
+
 
 async function generateRandom(){
     
     const limitValue = document.getElementById('randomCount').value;
     const limit = limitValue ? parseInt(limitValue) : 1;  // Default to 3 if no valid limit is selected
-    const { location, mood, minCost, maxCost } = window.filters || {};
+    const { cities, mood, minCost, maxCost } = window.filters || {};
     const urlParams = new URLSearchParams(window.location.search);
     const itineraryId = urlParams.get('id');
-    DataModel.postItineraryActivities(limit, itineraryId, location, mood, minCost, maxCost);
+    DataModel.postItineraryActivities(limit, itineraryId, cities, mood, minCost, maxCost);
     displayItineraryDetails();
 }
 
@@ -263,6 +265,36 @@ async function displayItineraryDetails() {
 
         const inviteIdElement = document.getElementById('inviteId');
         inviteIdElement.textContent = `Your Invite ID: ${itineraryId}`;
+        // Load city checkboxes based on location
+const cityCheckboxesContainer = document.getElementById('cityCheckboxes');
+cityCheckboxesContainer.innerHTML = '<p>Loading cities...</p>';
+
+try {
+    const cityResponse = await fetch(`/api/itineraries/${itineraryId}/cities`, {
+        headers: {
+            'Authorization': localStorage.getItem('jwtToken')
+        }
+    });
+
+    const cityData = await cityResponse.json();
+
+    if (cityResponse.ok && cityData.cities.length > 0) {
+        cityCheckboxesContainer.innerHTML = '';
+        cityData.cities.forEach(city => {
+            const checkbox = document.createElement('label');
+            checkbox.innerHTML = `
+                <input type="checkbox" value="${city}"> ${city}
+            `;
+            cityCheckboxesContainer.appendChild(checkbox);
+        });
+    } else {
+        cityCheckboxesContainer.innerHTML = '<p>No cities available for this itinerary.</p>';
+    }
+} catch (err) {
+    console.error('Error loading cities:', err);
+    cityCheckboxesContainer.innerHTML = '<p>Error loading cities.</p>';
+}
+
 
         // Fetch activities and populate the table
         const activities = await DataModel.getItineraryActivities(itineraryId);

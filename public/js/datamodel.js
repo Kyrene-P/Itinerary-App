@@ -128,12 +128,12 @@ const DataModel = (function () {
             }
         },
 
-        createItinerary: async function (title, description, startDate, endDate, time) {
+        createItinerary: async function (title, description, startDate, endDate, time, location) {
             if (!token) {
                 console.error("Token is not set.");
                 return null;
             }
-
+        
             try {
                 const response = await fetch('/api/itineraries', {
                     method: 'POST',
@@ -145,16 +145,17 @@ const DataModel = (function () {
                         title: title,
                         description: description || '',
                         start_date: `${startDate}T${time}`,
-                        end_date: endDate
+                        end_date: endDate,
+                        location: location
                     }),
                 });
-
+        
                 if (!response.ok) {
                     console.error("Error creating itinerary:", await response.json());
                     return null;
                 }
-
-                return await response.json(); // Returns itinerary ID
+        
+                return await response.json();
             } catch (error) {
                 console.error("Error in API call:", error);
                 return null;
@@ -273,7 +274,7 @@ const DataModel = (function () {
                 return [];
             }
         },
-        postItineraryActivities: async function (limit, itineraryId, location, mood, minCost, maxCost){
+        postItineraryActivities: async function (limit, itineraryId, cities, mood, minCost, maxCost) {
             if (!token) {
                 console.error("Token is not set.");
                 return [];
@@ -287,7 +288,7 @@ const DataModel = (function () {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        location: location,
+                        cities: cities,
                         mood: mood,
                         minCost: minCost,
                         maxCost: maxCost,

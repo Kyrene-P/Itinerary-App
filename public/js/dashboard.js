@@ -23,6 +23,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.getElementById('statusMessage');
     const submitInviteCodeButton = document.getElementById("submitInviteCode");
     const inviteCodeInput = document.getElementById("inviteCodeInput");
+    const itineraryLocationSelect = document.getElementById('itineraryLocation');
+
+
+
+    
+    // Function to fetch locations and populate the dropdown
+    async function populateLocationDropdown() {
+    try {
+        const response = await fetch('/api/locations', {
+            headers: {
+                'Authorization': localStorage.getItem('jwtToken')
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch locations.");
+        }
+
+        const data = await response.json();
+        const locations = data.locations;
+
+        // Clear old options
+        itineraryLocationSelect.innerHTML = '<option value="" disabled selected>Select a region</option>';
+
+        locations.forEach(location => {
+            const option = document.createElement('option');
+            option.value = location;
+            option.textContent = location;
+            itineraryLocationSelect.appendChild(option);
+        });
+    } catch (err) {
+        console.error('Error populating locations:', err);
+        itineraryLocationSelect.innerHTML = '<option value="" disabled selected>Could not load locations</option>';
+    }
+}
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -57,13 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         const title = document.getElementById('title').value;
+        const location = document.getElementById("itineraryLocation").value;
         const startDate = document.getElementById('startDate').value;
         const endDate = document.getElementById('endDate').value;
         const time = document.getElementById("time").value;
         const description = document.getElementById('description').value;
 
         try{
-            const newItinerary = await DataModel.createItinerary(title, description, startDate, endDate, time);
+            const newItinerary = await DataModel.createItinerary(title, description, startDate, endDate, time, location);
 
             if (newItinerary) {
                 statusMessage.textContent = "Itinerary created successfully!";
@@ -127,6 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // The renderUserList will be removed later on
         // renderUserList();
         displayAllItineraries();
+        populateLocationDropdown();
+
     }
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
@@ -138,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
 //////////////////////////////////////////
 //FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
-
 //This function allows for all itineraries to be displayed for a certain user
 async function displayAllItineraries() {
     const itineraryListElement = document.getElementById('itineraryList');

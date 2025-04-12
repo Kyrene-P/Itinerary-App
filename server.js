@@ -268,7 +268,7 @@ app.get('/api/itineraries/:id', authenticateToken, async (req, res) => {
 
 // Route: Create a new itinerary
 app.post('/api/itineraries', authenticateToken, async (req, res) => {
-    const { title, description, start_date, end_date } = req.body;
+    const { title, description, start_date, end_date, location } = req.body;
 
     // Validate required fields
     if (!title || !start_date || !end_date) {
@@ -283,9 +283,9 @@ app.post('/api/itineraries', authenticateToken, async (req, res) => {
         const updatedAt = createdAt;
 
         const [result] = await connection.execute(
-            `INSERT INTO itineraries (id, user_email, title, description, start_date, end_date, created_at, updated_at) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [itineraryId, req.user.email, title, description || '', start_date, end_date, createdAt, updatedAt]
+            `INSERT INTO itineraries (id, user_email, title, description, start_date, end_date, location, created_at, updated_at) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [itineraryId, req.user.email, title, description || '', start_date, end_date, location, createdAt, updatedAt]
         );
 
         await connection.end();
@@ -447,7 +447,7 @@ app.get('/api/itineraries/:id/activities', authenticateToken, async (req, res) =
 //Route: add activities
 app.post('/api/itineraries/:id/activities', authenticateToken, async (req, res) => {
     const itineraryId = req.params.id;
-    const { limit, location, mood, minCost, maxCost } = req.body; // Filters
+    const { limit, cities, mood, minCost, maxCost } = req.body; // Filters
 
     try {
         const connection = await createConnection();
@@ -460,10 +460,11 @@ app.post('/api/itineraries/:id/activities', authenticateToken, async (req, res) 
 
         const params = [];
          // Apply optional filters dynamically
-        if (location) {
-            query += ` AND ActivityLocation = ?`;
-            params.push(location);
-        }
+         if (cities && Array.isArray(cities) && cities.length > 0) {
+            const placeholders = cities.map(() => '?').join(',');
+            query += ` AND ActivityCity IN (${placeholders})`;
+            params.push(...cities);
+        }        
         if (mood) {
             query += ` AND ActivityMood = ?`;
             params.push(mood);
@@ -558,6 +559,66 @@ app.get('/api/activities/:activityId/rating', authenticateToken, async (req, res
         res.status(500).json({ message: 'Error fetching rating' });
     }
 });
+// Route: Get available locations (states or countries)
+app.get('/api/locations', authenticateToken, async (req, res) => {
+    try {
+        const connection = await createConnection();
+
+        const [rows] = await connection.execute(`
+            SELECT DISTINCT ActivityLocation AS location
+            FROM ActivitiesList
+            WHERE ActivityLocation IS NOT NULL AND ActivityLocation != ''
+            ORDER BY ActivityLocation ASC
+        `);
+
+        await connection.end();
+
+        const locations = rows.map(row => row.location);
+        res.status(200).json({ locations });
+    } catch (error) {
+        console.error('Error fetching locations:', error);
+        res.status(500).json({ message: 'Error fetching locations' });
+    }
+});
+
+app.get('/api/itineraries/:id/cities', authenticateToken, async (req, res) => {
+    const itineraryId = req.params.id;
+
+    try {
+        const connection = await createConnection();
+
+        // Get the location from the itinerary
+        const [itineraryRows] = await connection.execute(
+            `SELECT location FROM itineraries WHERE id = ?`,
+            [itineraryId]
+        );
+
+        if (itineraryRows.length === 0) {
+            await connection.end();
+            return res.status(404).json({ message: 'Itinerary not found.' });
+        }
+
+        const itineraryLocation = itineraryRows[0].location;
+
+        // Get cities matching the location
+        const [cityRows] = await connection.execute(
+            `SELECT DISTINCT ActivityCity FROM ActivitiesList
+             WHERE ActivityLocation = ? AND ActivityCity IS NOT NULL AND ActivityCity != ''
+             ORDER BY ActivityCity ASC`,
+            [itineraryLocation]
+        );
+
+        await connection.end();
+
+        const cities = cityRows.map(row => row.ActivityCity);
+        res.status(200).json({ cities });
+    } catch (error) {
+        console.error('Error fetching cities for itinerary:', error);
+        res.status(500).json({ message: 'Error fetching cities.' });
+    }
+});
+
+
 
 
 //////////////////////////////////////
