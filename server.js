@@ -334,6 +334,48 @@ app.put('/api/itineraries/:id', authenticateToken, async (req, res) => {
     }
 });
 
+
+//Route:  Delete activities
+
+app.delete('/api/UserActivities/:id', authenticateToken, async (req, res) => {
+    const itineraryId = req.params.id;
+    try {
+        const connection = await createConnection();
+
+        const [isOwner] = await connection.execute(
+            `SELECT * FROM UserActivities WHERE id = ?`,
+            [itineraryId]
+        );
+
+        let result;
+
+        if(isOwner.length > 0){
+            // if the User is the owner, the itinerary is deleted from the itineraries table
+            [result] = await connection.execute(
+                `DELETE FROM UserActivities WHERE id = ?`,
+                [itineraryId]
+            );
+        }else{
+            // if the User is NOT the owner, they are removed from the itinerary_users table
+            [result] = await connection.execute(
+                `DELETE FROM UserActivities WHERE itinerary_id = ?`,
+                [itineraryId]
+            );
+        }
+        await connection.end();
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Itinerary not found or unauthorized.' });
+        }
+
+        res.status(200).json({ message: 'Actvities deleted successfully!' });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error deleting itinerary.' });
+    }
+
+});
 // Route: Delete an itinerary
 app.delete('/api/itineraries/:id', authenticateToken, async (req, res) => {
     const itineraryId = req.params.id;

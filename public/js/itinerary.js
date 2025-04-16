@@ -7,15 +7,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // activities table is cleared when 'clear activities' button is clicked
     const clearActivitiesButton = document.getElementById('clearActivitiesButton');
-    if (clearActivitiesButton) {
-        clearActivitiesButton.addEventListener('click', () => {
-            const activitiesTableBody = document.getElementById('activitiesTableBody');
-            activitiesTableBody.innerHTML = `
-                <tr>
-                    <td colspan="5">No activities found.</td>
-                </tr>
-            `;
-        });
+if (clearActivitiesButton) {
+    clearActivitiesButton.addEventListener('click', async () => {
+        const itineraryId = new URLSearchParams(window.location.search).get('id');
+        if (!itineraryId) {
+            console.error('Itinerary ID is missing.');
+            return;
+        }
+
+        if (!confirm("Are you sure you want to delete all activities?")) {
+            return;
+        }
+
+        const result = await DataModel.deleteActivities(itineraryId);
+        if (result) {
+            displayItineraryDetails(); // Refresh the table after deletion
+        } else {
+            alert("Failed to clear activities.");
+        }
+    });
+
 }
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS

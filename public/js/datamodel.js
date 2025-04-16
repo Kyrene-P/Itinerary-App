@@ -309,6 +309,33 @@ const DataModel = (function () {
             }
         },
 
+        deleteActivities: async function (id) {
+            if (!token) {
+                console.error("Token is not set.");
+                return null;
+            }
+
+            try {
+                const response = await fetch(`/api/UserActivities/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error("Error deleting itinerary:", await response.json());
+                    return null;
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error in API call:", error);
+                return null;
+            }
+        },
+
         getItineraryActivities: async function (itineraryId) {
             if (!token) {
                 console.error("Token is not set.");
