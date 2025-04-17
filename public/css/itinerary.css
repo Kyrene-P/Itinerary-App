@@ -14,7 +14,25 @@ body {
     margin: 0 auto;
     margin-top: 20px;
 }
+.theme-france {
+    background-color: lavender;
+    color: navy;
+}
 
+/* Arizona Theme */
+.theme-arizona {
+    background-color: #fff3cd;
+    color: #6f4e37;
+}
+
+/* Default fallback */
+.theme-default {
+    background-color: white;
+    color: black;
+}
+.theme-arizona button{
+    background-color: purple;
+}
 .modal {
     display: none;
     position: fixed;

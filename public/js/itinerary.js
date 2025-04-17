@@ -248,6 +248,8 @@ async function displayItineraryDetails() {
     const itineraryTitleElement = document.getElementById('itinerary-title');
     const itineraryTime = document.getElementById('itinerary-time');
     const itineraryDescriptionElement = document.getElementById('itinerary-description');
+    const body = document.getElementById('page-body');
+    const itineraryLocation = document.getElementById('itinerary-location');
     const activitiesTableBody = document.getElementById('activitiesTableBody');
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -268,7 +270,16 @@ async function displayItineraryDetails() {
 
         itineraryTitleElement.textContent = details.title || 'Untitled Itinerary';
         itineraryDescriptionElement.textContent = details.description || 'No details available.';
-
+        itineraryLocation.textContent = details.location || 'No Location available';
+        
+        //Allows Css to be changed by location
+        if (details.location.includes('France')) {
+            body.classList.add('theme-france');
+        } else if (details.location.includes('Arizona')) {
+            body.classList.add('theme-arizona');
+        } else {
+            body.classList.add('theme-default');
+        }
         // formating the time
         const date = new Date(details.start_date);
         const formattedTime = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
