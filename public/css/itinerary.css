@@ -24,15 +24,175 @@ body {
     --azHeader: #ad3129;
     --azTextColor1: #58180e;
     --azTextColor2: #ac813c;
+
+    --frButton1: #748984;
+    --frHover1: #566061;
+    --frButton2: #ad3129;
+    --frHover2: #8a312b;
+    --frBackground: lavender;
+    --frHeader: #ad3129;
+    --frTextColor1: navy;
+    --frTextColor2: #ac813c;
 }
 
-/* France Theme */
+/************ France Theme ************/
 .theme-france {
-    background-color: lavender;
-    color: navy;
+    background-color: var(--frBackground);
+    color: var(--frTextColor1);
 }
 
-/* Arizona Theme */
+/* This styling deals with the itinerary page itself */
+.theme-france h1{
+    color: var(--frHeader);
+}
+
+.theme-france h2{
+    color: var(--frHeader);
+}
+
+.theme-france thead{
+    color: var(--frHeader);
+}
+
+.theme-france #itinerary-time{
+    color: var(--frTextColor2);
+    font-weight: bold;
+}
+
+.theme-france #itinerary-location{
+    color: var(--frTextColor2);
+    font-weight: bold;
+}
+
+.theme-france .open-modal{
+    color: var(--frTextColor2);
+    font-weight: bold;
+}
+
+/* The reason why there is so many buttons is because the
+    Generate Random Activities & Filter Activities refuse to
+    get colored otherwise */
+.theme-france button{
+    background-color: var(--frButton1);
+}
+
+.theme-france #generateRandomButton {
+    background-color: var(--frButton1);
+}
+
+.theme-france #filterActivitiesButton {
+    background-color: var(--frButton1);
+}
+
+.theme-france #clearActivitiesButton {
+    background-color: var(--frButton2);
+}
+
+.theme-france #editButton {
+    background-color: var(--frButton2);
+}
+
+.theme-france button:hover{
+    background-color: var(--frHover1);
+}
+
+.theme-france #generateRandomButton:hover{
+    background-color: var(--frHover1);
+}
+
+.theme-france #filterActivitiesButton:hover{
+    background-color: var(--frHover1);
+}
+
+.theme-france #clearActivitiesButton:hover{
+    background-color: var(--frHover2);
+}
+
+.theme-france #editButton:hover{
+    background-color: var(--frHover2);
+}
+
+/* France Theme Modal Styling */
+.theme-france .modal h2{
+    color: var(--frHeader);
+}
+
+.theme-france #filterModal h2{
+    color: var(--frHeader);
+}
+
+/* France Theme Edit Modal */
+.theme-france #saveButton {
+    background-color: var(--frButton1);
+}
+
+.theme-france #saveButton:hover {
+    background-color: var(--frHover1);
+}
+
+.theme-france #deleteButton {
+    background-color: var(--frButton2);
+}
+
+.theme-france #deleteButton:hover {
+    background-color: var(--frHover2);
+}
+
+.theme-france #editItineraryTitle {
+    color: var( --frTextColor1);
+}
+
+.theme-france #editItineraryDescription {
+    color: var( --frTextColor1);
+}
+
+/* Modal Button Styling */
+.theme-france #confirmRandomButton {
+    background-color: var(--frButton1);
+}
+
+.theme-france #confirmRandomButton:hover {
+    background-color: var(--frHover1);
+}
+
+.theme-france #applyFiltersButton {
+    background-color: var(--frButton1);
+}
+
+.theme-france #applyFiltersButton:hover {
+    background-color: var(--frHover1);
+}
+
+.theme-france #copyInviteCode{
+    background-color: var(--frButton1);
+}
+
+.theme-france #copyInviteCode:hover {
+    background-color: var(--frHover1);
+}
+
+.theme-france #shareInviteCode {
+    background-color: var(--frButton1);
+}
+
+.theme-france #shareInviteCode:hover {
+    background-color: var(--frHover1);
+}
+
+.theme-france #inviteId{
+    color: var(--frTextColor2);
+    border: 2px solid var(--frTextColor2);
+}
+
+.theme-france #submitRatingButton {
+    background-color: var(--frButton1);
+}
+
+.theme-france #submitRatingButton:hover {
+    background-color: var(--frHover1);
+}
+
+/************ Arizona Theme ************/
 .theme-arizona {
     background-color: var(--azBackground);
     color: var(--azTextColor1);
