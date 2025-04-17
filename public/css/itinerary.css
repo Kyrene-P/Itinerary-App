@@ -181,6 +181,14 @@ body {
     border: 2px solid var(--azTextColor2);
 }
 
+.theme-arizona #submitRatingButton {
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #submitRatingButton:hover {
+    background-color: var(--azHover1);
+}
+
 /* Default fallback */
 .theme-default {
     background-color: white;
