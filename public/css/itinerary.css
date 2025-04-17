@@ -14,6 +14,19 @@ body {
     margin: 0 auto;
     margin-top: 20px;
 }
+
+:root{
+    --azButton1: #748984;
+    --azHover1: #566061;
+    --azButton2: #ad3129;
+    --azHover2: #8a312b;
+    --azBackground: #edcebc;
+    --azHeader: #ad3129;
+    --azTextColor1: #58180e;
+    --azTextColor2: #ac813c;
+}
+
+/* France Theme */
 .theme-france {
     background-color: lavender;
     color: navy;
@@ -21,8 +34,151 @@ body {
 
 /* Arizona Theme */
 .theme-arizona {
-    background-color: #fff3cd;
-    color: #6f4e37;
+    background-color: var(--azBackground);
+    color: var(--azTextColor1);
+}
+
+/* This styling deals with the itinerary page itself */
+.theme-arizona h1{
+    color: var(--azHeader);
+}
+
+.theme-arizona h2{
+    color: var(--azHeader);
+}
+
+.theme-arizona thead{
+    color: var(--azHeader);
+}
+
+.theme-arizona #itinerary-time{
+    color: var(--azTextColor2);
+    font-weight: bold;
+}
+
+.theme-arizona #itinerary-location{
+    color: var(--azTextColor2);
+    font-weight: bold;
+}
+
+.theme-arizona .open-modal{
+    color: var(--azTextColor2);
+    font-weight: bold;
+}
+
+/* The reason why there is so many buttons is because the
+    Generate Random Activities & Filter Activities refuse to
+    get colored otherwise */
+.theme-arizona button{
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #generateRandomButton {
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #filterActivitiesButton {
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #clearActivitiesButton {
+    background-color: var(--azButton2);
+}
+
+.theme-arizona #editButton {
+    background-color: var(--azButton2);
+}
+
+.theme-arizona button:hover{
+    background-color: var(--azHover1);
+}
+
+.theme-arizona #generateRandomButton:hover{
+    background-color: var(--azHover1);
+}
+
+.theme-arizona #filterActivitiesButton:hover{
+    background-color: var(--azHover1);
+}
+
+.theme-arizona #clearActivitiesButton:hover{
+    background-color: var(--azHover2);
+}
+
+.theme-arizona #editButton:hover{
+    background-color: var(--azHover2);
+}
+
+/* Arizona Theme Modal Styling */
+.theme-arizona .modal h2{
+    color: var(--azHeader);
+}
+
+.theme-arizona #filterModal h2{
+    color: var(--azHeader);
+}
+
+/* Arizona Theme Edit Modal */
+.theme-arizona #saveButton {
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #saveButton:hover {
+    background-color: var(--azHover1);
+}
+
+.theme-arizona #deleteButton {
+    background-color: var(--azButton2);
+}
+
+.theme-arizona #deleteButton:hover {
+    background-color: var(--azHover2);
+}
+
+.theme-arizona #editItineraryTitle {
+    color: var( --azTextColor1);
+}
+
+.theme-arizona #editItineraryDescription {
+    color: var( --azTextColor1);
+}
+
+/* Modal Button Styling */
+.theme-arizona #confirmRandomButton {
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #confirmRandomButton:hover {
+    background-color: var(--azHover1);
+}
+
+.theme-arizona #applyFiltersButton {
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #applyFiltersButton:hover {
+    background-color: var(--azHover1);
+}
+
+.theme-arizona #copyInviteCode{
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #copyInviteCode:hover {
+    background-color: var(--azHover1);
+}
+
+.theme-arizona #shareInviteCode {
+    background-color: var(--azButton1);
+}
+
+.theme-arizona #shareInviteCode:hover {
+    background-color: var(--azHover1);
+}
+
+.theme-arizona #inviteId{
+    color: var(--azTextColor2);
+    border: 2px solid var(--azTextColor2);
 }
 
 /* Default fallback */
@@ -30,9 +186,7 @@ body {
     background-color: white;
     color: black;
 }
-.theme-arizona button{
-    background-color: purple;
-}
+
 .modal {
     display: none;
     position: fixed;
@@ -68,32 +222,6 @@ h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-#logoutButton:hover {
-    background-color: #0056b3;
-}
-
-#refreshButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#refreshButton:hover {
-    background-color: #0056b3;
-}
-
-.user-list {
-    margin-top: 20px;
-}
-
-.user-item {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
 }
 
 .feature-buttons {

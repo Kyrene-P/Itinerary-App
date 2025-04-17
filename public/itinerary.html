@@ -62,15 +62,15 @@
                 <h2>Edit Itinerary</h2>
     
                 <form id="editItineraryForm">
-                    <label for="editTitle">Title:</label>
+                    <label id="editItineraryTitle" for="editTitle">Title:</label>
                     <input type="text" id="editTitle" required>
                 
-                    <label for="editDescription">Description:</label>
+                    <label id="editItineraryDescription" for="editDescription">Description:</label>
                     <textarea id="editDescription"></textarea>
                 
                     <!-- Button container -->
                     <div class="button-group">
-                        <button type="submit">Save Changes</button>
+                        <button type="submit" id="saveButton">Save Changes</button>
                         <button type="button" id="deleteButton">Delete Itinerary</button>
                     </div>
                 </form>
