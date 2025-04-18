@@ -39,8 +39,6 @@ h1 {
     cursor: pointer;
 }
 
-
-
 #refreshButton {
     background-color: #46628c; /* Same green color from logon button */
     color: white;
@@ -195,6 +193,7 @@ h1 {
 #submitInviteCode:hover {
     background-color: #beaa6e;
 }
+
 .itinerary-item {
     display: flex;
     justify-content: space-between; 
@@ -227,6 +226,71 @@ h1 {
     font-weight: bold;
 }
 
+label{
+    color: #46628c;
+    font-weight: bold;
+}
 
+#createItineraryButton {
+    padding: 8px 12px;
+    background-color: #e7ce83;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
 
+#createItineraryButton:hover {
+    background-color: #beaa6e;
+}
 
+#cancelButton {
+    background-color: #46628c; /* Same green color from logon button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#cancelButton:hover {
+    background-color: #314563; /* Slightly darker green for hover effect */
+}
+
+#itineraryForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+#itineraryForm div {
+    display: flex;
+    flex-direction: column;
+}
+
+#description {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* #itineraryForm div:last-of-type {
+    grid-column: span 2;
+    display: flex;
+    justify-content: space-between;
+} */
+
+input, select, textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+#statusMessage {
+    margin-top: 10px;
+    color: green;
+    font-weight: bold;
+}
