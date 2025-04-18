@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #46628c;
     margin: 0;
     padding: 0;
 }
@@ -42,7 +42,7 @@ h1 {
 
 
 #refreshButton {
-    background-color: #007bff; /* Same green color from logon button */
+    background-color: #46628c; /* Same green color from logon button */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -51,7 +51,7 @@ h1 {
 }
 
 #refreshButton:hover {
-    background-color: #0056b3; /* Slightly darker green for hover effect */
+    background-color: #314563; /* Slightly darker green for hover effect */
 }
 
 .user-list {
@@ -154,7 +154,7 @@ h1 {
 }
 #addItineraryButton {
     padding: 10px 20px;
-    background-color: #45b6fe;
+    background-color: #e7ce83;
     color: white;
     border: none;
     border-radius: 5px;
@@ -162,7 +162,7 @@ h1 {
 }
 
 #addItineraryButton:hover {
-    background-color: #0056b3;
+    background-color: #beaa6e;
 }
 .invite-code-container {
     position: absolute;
@@ -171,6 +171,7 @@ h1 {
     display: flex;
     gap: 5px;
     align-items: center;
+    padding-right: 25px;
 }
 
 #inviteCodeInput {
@@ -183,7 +184,7 @@ h1 {
 
 #submitInviteCode {
     padding: 8px 12px;
-    background-color: #007bff;
+    background-color: #e7ce83;
     color: white;
     border: none;
     border-radius: 5px;
@@ -192,7 +193,7 @@ h1 {
 }
 
 #submitInviteCode:hover {
-    background-color: #0056b3;
+    background-color: #beaa6e;
 }
 .itinerary-item {
     display: flex;
@@ -221,7 +222,10 @@ h1 {
     margin-left: 20px; 
 }
 
-
+.itinerary-item:hover{
+    color: #46628c;
+    font-weight: bold;
+}
 
 
 

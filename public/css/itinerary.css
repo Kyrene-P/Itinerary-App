@@ -15,6 +15,10 @@ body {
     margin-top: 20px;
 }
 
+.open-modal:hover{
+    cursor: pointer;
+}
+
 :root{
     --azButton1: #748984;
     --azHover1: #566061;
@@ -24,21 +28,27 @@ body {
     --azHeader: #ad3129;
     --azTextColor1: #58180e;
     --azTextColor2: #ac813c;
+    --azActivityNameHover: #f3b757;
 
-    --frButton1: #748984;
-    --frHover1: #566061;
-    --frButton2: #ad3129;
-    --frHover2: #8a312b;
+    --frButton1: #ceb5c2;
+    --frHover1: #b49cb1;
+    --frButton2: #b36e8e;
+    --frHover2: #975d78;
     --frBackground: lavender;
-    --frHeader: #ad3129;
+    --frHeader: #b36e8e;
     --frTextColor1: navy;
-    --frTextColor2: #ac813c;
+    --frTextColor2: #5d4972;
+    --frActivityNameHover: #b36e8e;
 }
 
 /************ France Theme ************/
 .theme-france {
     background-color: var(--frBackground);
     color: var(--frTextColor1);
+}
+
+.theme-france td.open-modal:hover{
+    color: var(--frActivityNameHover);
 }
 
 /* This styling deals with the itinerary page itself */
@@ -196,6 +206,10 @@ body {
 .theme-arizona {
     background-color: var(--azBackground);
     color: var(--azTextColor1);
+}
+
+.theme-arizona td.open-modal:hover{
+    color: var(--azActivityNameHover);
 }
 
 /* This styling deals with the itinerary page itself */
