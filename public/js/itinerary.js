@@ -149,7 +149,7 @@ if (clearActivitiesButton) {
     //////////////////////////////////////////
      const buttons = {
         inviteButton : document.getElementById('inviteButton'),
-        achievementButton : document.getElementById('achievementButton'),
+        // achievementButton : document.getElementById('achievementButton'),
         editButton : document.getElementById('editButton'),
         generateRandomButton : document.getElementById('generateRandomButton'),
         filterActivitiesButton : document.getElementById('filterActivitiesButton'),
@@ -158,7 +158,7 @@ if (clearActivitiesButton) {
 
     const modals = {
         inviteButton : document.getElementById('inviteModal'),
-        achievementButton : document.getElementById('achievementModal'),
+        // achievementButton : document.getElementById('achievementModal'),
         editButton : document.getElementById('editModal'),
         generateRandomButton : document.getElementById('randomModal'),
         filterActivitiesButton : document.getElementById('filterModal')

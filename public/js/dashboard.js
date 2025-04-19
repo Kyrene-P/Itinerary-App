@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitInviteCodeButton = document.getElementById("submitInviteCode");
     const inviteCodeInput = document.getElementById("inviteCodeInput");
     const itineraryLocationSelect = document.getElementById('itineraryLocation');
-
+    const viewAchievementsButton = document.getElementById('viewAchievementsButton');
+    const achievementsModal = document.getElementById('achievementsModal');
+    const closeAchievements = document.getElementById('closeAchievements');
 
 
     
@@ -58,6 +60,22 @@ document.addEventListener('DOMContentLoaded', () => {
         itineraryLocationSelect.innerHTML = '<option value="" disabled selected>Could not load locations</option>';
     }
 }
+
+viewAchievementsButton.addEventListener('click', async () => {
+    await updateBadges();
+    achievementsModal.style.display = "block";
+});
+
+closeAchievements.addEventListener('click', () => {
+    achievementsModal.style.display = "none";
+});
+
+window.addEventListener('click', (event) => {
+    if (event.target === achievementsModal) {
+        achievementsModal.style.display = "none";
+    }
+});
+
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -237,26 +255,27 @@ async function displayAllItineraries() {
     }
 }
 
+async function updateBadges() {
+    try {
+        const badges = await DataModel.getUserBadges();
 
-//It's current function allows the user's emails to link to iteneraries
-//--This will later be changed to the specific user's page an all their itineraries being displayed--
-//--When a user selects a specific itenerary, it will pull up the plans/schedule--
-// async function renderUserList() {
-//     const userListElement = document.getElementById('userList');
-//     userListElement.innerHTML = '<div class="loading-message">Loading user list...</div>';
-//     const users = await DataModel.getUsers(); 
-//     users.forEach(user => {
-//         const userItem = document.createElement('div');
-//         userItem.classList.add('user-item');
-//         const itineraryLink = document.createElement('a');
-//         itineraryLink.href = `/dashboard/itinerary`;
-//         itineraryLink.textContent = user;
-//         itineraryLink.classList.add('itinerary-link');
+        document.getElementById("badge-arizona").src = badges.arizona ?
+            "./images/grey-arizona-badge.png" : "./images/arizona-badge.png";
 
-//         userItem.appendChild(itineraryLink)
-//         userListElement.appendChild(userItem);
-//     });
-// }
+        document.getElementById("badge-france").src = badges.france ?
+            "./images/grey-france-badge.PNG" : "./images/france-badge.PNG";
+
+        document.getElementById("badge-itinerary").src = badges.itinerary ?
+            "./images/grey-first-itinerary-badge-funny.PNG" : "./images/first-itinerary-badge-funny.PNG";
+
+        document.getElementById("badge-rating").src = badges.rating ?
+            "./images/grey-rating-badge.png" : "./images/rating-badge.png";
+
+    } catch (err) {
+        console.error("Error checking badge status:", err);
+    }
+}
+
 //////////////////////////////////////////
 //END FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////

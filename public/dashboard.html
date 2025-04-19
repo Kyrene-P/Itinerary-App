@@ -15,6 +15,7 @@
         <div class="invite-code-container">
             <input type="text" id="inviteCodeInput" placeholder="Enter invite code">
             <button id="submitInviteCode">Join</button>
+            <button id="viewAchievementsButton">View Achievements</button>
         </div>
         <div class="buttons">
             <button id="addItineraryButton">+Add New Itinerary</button>
@@ -68,6 +69,32 @@
             
         </form>
         <p id="statusMessage"></p>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div id="achievementsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeAchievements">&times;</span>
+            <h2>Your Badges</h2>
+            <div class="badge-container">
+                <div class="badge">
+                    <img src="./images/grey-arizona-badge.png" id="badge-arizona" alt="Arizona Badge">
+                    <p>Arizona Badge</p>
+                </div>
+                <div class="badge">
+                    <img src="./images/grey-france-badge.PNG" id="badge-france" alt="France Badge">
+                    <p>France Badge</p>
+                </div>
+                <div class="badge">
+                    <img src="./images/grey-first-itinerary-badge-funny.PNG" id="badge-itinerary" alt="First Itinerary Badge">
+                    <p>First Itinerary Badge</p>
+                </div>
+                <div class="badge">
+                    <img src="./images/grey-rating-badge.png" id="badge-rating" alt="First Rating Badge">
+                    <p>First Rating Badge</p>
+                </div>
+            </div>
+        </div>
     </div>
 
         <p id="itineraryCount">Total Itineraries: 0</p>
