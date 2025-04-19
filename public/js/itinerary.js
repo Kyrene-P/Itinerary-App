@@ -322,10 +322,39 @@ try {
         const activities = await DataModel.getItineraryActivities(itineraryId);
         activitiesTableBody.innerHTML = '';
 
-        if (activities.length === 0) {
-            activitiesTableBody.innerHTML = '<tr><td colspan="4">No activities found.</td></tr>';
+        const startDate = new Date(details.start_date);
+        const endDate = new Date(details.end_date);
+        const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+        let currentIndex = 0;
+        let assignedActivities = [];
+
+        // updated logic for date and time of each activity
+        for (let i = 0; i < totalDays; i++) {
+            const currentDate = new Date(startDate);
+            currentDate.setDate(startDate.getDate() + i);
+            const numActivities = i % 2 === 0 ? 3 : 2;
+
+            for (let j = 0; j < numActivities && currentIndex < activities.length; j++) {
+                const activity = activities[currentIndex];
+                const activityTime = new Date(currentDate);
+                activityTime.setHours(9 + j * 3); // 9AM, 12PM, 3PM
+
+                assignedActivities.push({
+                    ...activity,
+                    displayDate: currentDate.toLocaleDateString(),
+                    displayTime: activityTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+
+                currentIndex++;
+            }
+        }
+        
+        // updated table
+        if (assignedActivities.length === 0) {
+            activitiesTableBody.innerHTML = '<tr><td colspan="6">No activities found.</td></tr>';
         } else {
-            activities.forEach(activity => {
+            assignedActivities.forEach(activity => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="open-modal">${activity.ActivityName}</td>
@@ -333,14 +362,15 @@ try {
                     <td>${activity.ActivityMood}</td>
                     <td>${activity.ActivityCost}</td>
                     <td>${activity.averageRating || 'Not rated'}</td>
-                     `;
+                    <td>${activity.displayDate} - ${activity.displayTime}</td>
+                `;
                 activitiesTableBody.appendChild(row);
-
+        
                 row.querySelector('.open-modal').addEventListener('click', () => {
                     openActivityModal(activity);
                 });
             });
-        }
+        }        
     } catch (error) {
         console.error('Error displaying itinerary details:', error);
     }
