@@ -260,16 +260,16 @@ async function updateBadges() {
         const badges = await DataModel.getUserBadges();
 
         document.getElementById("badge-arizona").src = badges.arizona ?
-            "./images/grey-arizona-badge.png" : "./images/arizona-badge.png";
-
+            "./images/arizona-badge.png" : "./images/grey-arizona-badge.png";
+            
         document.getElementById("badge-france").src = badges.france ?
-            "./images/grey-france-badge.PNG" : "./images/france-badge.PNG";
-
-        document.getElementById("badge-itinerary").src = badges.itinerary ?
-            "./images/grey-first-itinerary-badge-funny.PNG" : "./images/first-itinerary-badge-funny.PNG";
-
-        document.getElementById("badge-rating").src = badges.rating ?
-            "./images/grey-rating-badge.png" : "./images/rating-badge.png";
+            "./images/france-badge.PNG" : "./images/grey-france-badge.PNG";
+            
+        document.getElementById("badge-itinerary").src = badges.firstItinerary ?
+            "./images/first-itinerary-badge-funny.PNG" : "./images/grey-first-itinerary-badge-funny.PNG";
+            
+        document.getElementById("badge-rating").src = badges.firstRating ?
+            "./images/rating-badge.png" : "./images/grey-rating-badge.png";
 
     } catch (err) {
         console.error("Error checking badge status:", err);

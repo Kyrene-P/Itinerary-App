@@ -362,6 +362,48 @@ const DataModel = (function () {
                 console.error("Error in API call:", error);
                 return [];
             }
+        },
+
+        getUserBadges: async function () {
+            if (!token) {
+                console.error("Token is not set.");
+                return {
+                    arizona: false,
+                    france: false,
+                    firstItinerary: false,
+                    firstRating: false
+                };
+            }
+        
+            try {
+                const response = await fetch('/api/badges', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+        
+                if (!response.ok) {
+                    console.error("Error fetching badges:", await response.json());
+                    return {
+                        arizona: false,
+                        france: false,
+                        firstItinerary: false,
+                        firstRating: false
+                    };
+                }
+        
+                return await response.json();
+            } catch (error) {
+                console.error("Error fetching badge data:", error);
+                return {
+                    arizona: false,
+                    france: false,
+                    firstItinerary: false,
+                    firstRating: false
+                };
+            }
         }
 
     };

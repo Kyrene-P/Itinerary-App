@@ -660,7 +660,51 @@ app.get('/api/itineraries/:id/cities', authenticateToken, async (req, res) => {
     }
 });
 
+app.get('/api/badges', authenticateToken, async (req, res) => {
+    const email = req.user.email;
 
+    try {
+        const connection = await createConnection();
+
+        // This get the user itineraries for the france and arizona badge
+        const [itineraries] = await connection.execute(
+            `SELECT location FROM itineraries WHERE user_email = ?`,
+            [email]
+        );
+
+        // This checks if the user has done any ratings
+        const [ratings] = await connection.execute(
+            `SELECT * FROM ActivityRatings WHERE email = ?`,
+            [email]
+        );
+
+        // Making the defaults for AZ and FR & conditions for the other two
+        let hasArizona = false;
+        let hasFrance = false;
+        let hasFirstItinerary = itineraries.length > 0;
+        let hasFirstRating = ratings.length > 0;
+
+        // This finds if any itinerary's location is AZ or FR
+        for (const itinerary of itineraries) {
+            const location = itinerary.location?.toLowerCase();
+            if (location?.includes("arizona")) hasArizona = true;
+            if (location?.includes("france")) hasFrance = true;
+        }
+
+        await connection.end();
+
+        return res.status(200).json({
+            arizona: hasArizona,
+            france: hasFrance,
+            firstItinerary: hasFirstItinerary,
+            firstRating: hasFirstRating
+        });
+
+    } catch (error) {
+        console.error("Error checking badge status:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
 
 
 //////////////////////////////////////
