@@ -338,7 +338,9 @@ try {
             for (let j = 0; j < numActivities && currentIndex < activities.length; j++) {
                 const activity = activities[currentIndex];
                 const activityTime = new Date(currentDate);
-                activityTime.setHours(9 + j * 3); // 9AM, 12PM, 3PM
+                const startHour = startDate.getHours();
+                const startMinute = startDate.getMinutes();
+                activityTime.setHours(startHour + j * 3, startMinute); 
 
                 assignedActivities.push({
                     ...activity,
